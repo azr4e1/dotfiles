@@ -1,0 +1,57 @@
+###  _               _              
+### | |__   __ _ ___| |__  _ __ ___ 
+### | '_ \ / _` / __| '_ \| '__/ __|
+### | |_) | (_| \__ \ | | | | | (__ 
+### |_.__/ \__,_|___/_| |_|_|  \___|
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+	for rc in ~/.bashrc.d/*; do
+		if [ -f "$rc" ]; then
+			source "$rc"
+		fi
+	done
+fi
+
+unset rc
+
+# User specific environment
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:" ]]
+then
+PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:$PATH"
+fi
+export PATH
+
+# Starship
+eval "$(starship init bash)"
+
+# autojump
+[[ -s /home/ld/.autojump/etc/profile.d/autojump.sh ]] && source /home/ld/.autojump/etc/profile.d/autojump.sh
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/ld/.google-cloud-sdk/path.bash.inc' ]; then . '/home/ld/.google-cloud-sdk/path.bash.inc'; fi
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/ld/.google-cloud-sdk/completion.bash.inc' ]; then . '/home/ld/.google-cloud-sdk/completion.bash.inc'; fi
+
+# The next line enables ghcup
+[ -f "/home/ld/.ghcup/env" ] && source "/home/ld/.ghcup/env" # ghcup-env
+# cabal completion
+[ -f "/home/ld/.config/bash-completion/cabal" ] && source "/home/ld/.config/bash-completion/cabal"
+
+# Enable fuzzy finding (fzf)
+[[ -f "/usr/share/fzf/shell/key-bindings.bash" ]] && . /usr/share/fzf/shell/key-bindings.bash
+[[ -f "$HOME/config/fzf/fzf.bash" ]] && . $HOME/config/fzf/fzf.bash
+
+# tmux
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	if tmux has -t main; then
+		exec tmux attach-session -t main
+	else
+	  exec tmux new-session -s main
+    fi
+fi

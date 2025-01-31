@@ -1,0 +1,5 @@
+.First <- function() {
+    options(prompt = "R> ",
+            continue = "+\t",
+            browser = "firefox")
+}

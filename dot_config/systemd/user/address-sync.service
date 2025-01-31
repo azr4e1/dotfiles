@@ -1,0 +1,10 @@
+[Unit]
+Description=Generate address book from maildir
+Want=address-sync.timer
+
+[Service]
+Type=oneshot
+ExecStart=/home/ld/.go/bin/maildir-rank-addr
+
+[Install]
+WantedBy=multi-user.target

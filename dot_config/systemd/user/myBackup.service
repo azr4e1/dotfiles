@@ -1,0 +1,10 @@
+[Unit]
+Description=Create backups
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash /home/ld/.scripts/weekly_backups.sh
+TimeoutStartSec=0
+
+[Install]
+WantedBy=default.target

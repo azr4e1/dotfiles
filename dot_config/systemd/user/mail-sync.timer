@@ -1,0 +1,10 @@
+[Unit]
+Description=Synchronize the local and remote maildir
+Requires=mail-sync.service
+
+[Timer]
+Unit=mail-sync.service
+OnCalendar=*:0/2
+
+[Install]
+WantedBy=timers.target

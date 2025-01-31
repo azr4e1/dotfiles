@@ -1,0 +1,64 @@
+$include /etc/inputrc
+
+# Configuration file for GNU Readline. From Wikipedia:
+# GNU Readline is a software library that provides line-editing and history capabilities for interactive programs
+# with a command-line interface, such as Bash. It is currently maintained by Chet Ramey as part of the GNU Project.
+
+# This is to change how input is displayed in bash; from https://ss64.com/bash/syntax-inputrc.html:
+# "Although the Readline library comes with a set of default keybindings, it is possible to modify
+# these by putting commands into a .inputrc file, typically in the home directory. The name of this
+# file is taken from the value of the shell variable INPUTRC. If that variable is unset, the default
+# is ~/.inputrc If that file does not exist or cannot be read, the ultimate default is /etc/inputrc"
+# To use vi mode in Bash and any other tool that uses GNU Readline, such as the MySQL 
+# command line, you need only put this into your .inputrc file, then log out and in again:
+
+#set editing-mode vi
+#
+## to set cursor style to reflect the mode just like in VIM
+#set show-mode-in-prompt on
+#set vi-ins-mode-string \1\e[6 q\2
+#set vi-cmd-mode-string \1\e[2 q\2
+#
+# NB!!! If you want to edit the command you are writing on the command line in neovim (like, in the proper editor), just press v in normal mode. That will launch neovim (or the editor set with EDITOR environment variable). Once you have finished editing the command in neovim, just save and quit, and the command will be executed in command line.
+
+## enable history search
+#$if mode=vi
+#    set keymap vi-command
+#    "\e[A": history-search-backward
+#    "\e[B": history-search-forward
+#    j: history-search-forward
+#    k: history-search-backward
+#    Control-l: clear-screen
+#    # prepend sudo to a command
+#    "\es":"\eIsudo \eA"
+#    set keymap vi-insert
+#    "\e[A": history-search-backward
+#    "\e[B": history-search-forward
+#    Control-l: clear-screen
+#    "\es": "\eIsudo \eA"
+#    "\e-": " <- "
+#$endif
+
+# faster completion
+set show-all-if-ambiguous on
+
+## colorized completion
+# color files by type
+set colored-stats on
+# append char to indicate type
+set visible-stats on
+# mark symlinked directories
+set mark-symlinked-directories on
+# color the common prefix
+set colored-completion-prefix on
+# color the common prefix in menu-complete
+set menu-complete-display-prefix on
+
+# disable control echo
+# readline causes the terminal to echo ^C after Ctrl+C is pressed. To avoid
+# that set the following
+set echo-control-characters off
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\e[C": forward-char
+"\e[D": backward-char

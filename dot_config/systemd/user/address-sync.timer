@@ -1,0 +1,10 @@
+[Unit]
+Description=Generate address book from maildir
+Requires=address-sync.service
+
+[Timer]
+Unit=address-sync.service
+OnCalendar=00/2:30
+
+[Install]
+WantedBy=timers.target

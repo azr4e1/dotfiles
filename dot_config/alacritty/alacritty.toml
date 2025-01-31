@@ -1,0 +1,34 @@
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[cursor]
+unfocused_hollow = true
+
+[cursor.style]
+blinking = "Off"
+
+[font]
+builtin_box_drawing = true
+size = 11
+
+[font.normal]
+family = "Caskaydia Cove Nerd Font"
+
+[mouse]
+hide_when_typing = true
+
+[window]
+decorations = "Full"
+decorations_theme_variant = "Dark"
+dynamic_title = true
+opacity = 1
+startup_mode = "Maximized"
+
+[window.dimensions]
+columns = 109
+lines = 35
+
+[general]
+live_config_reload = true
+import = ["/home/ld/.config/alacritty/themes/themes/adwaita.toml"]

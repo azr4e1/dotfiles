@@ -1,0 +1,11 @@
+[Unit]
+Description=Synchronize the local and remote maildir
+Wants=mail-sync.timer
+
+[Service]
+Type=oneshot
+ExecStart=/home/ld/.local/bin/mail-sync.sh
+Environment="DISPLAY=:0" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
+
+[Install]
+WantedBy=multi-user.target

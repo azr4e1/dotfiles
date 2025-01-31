@@ -1,0 +1,19 @@
+[alias]
+	co = checkout
+	br = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) [%(authorname)]' --sort=-committerdate
+	ci = commit
+	st = status
+	last = log -1 HEAD
+	cob = checkout -b
+	del = branch -D
+    lg = !git log --pretty=format:\"%C(magenta)%h%Creset -%C(red)%d%Creset %s %C(dim green)(%cr) [%an]\" --abbrev-commit -30
+    res = !git reset --hard
+    undo = reset HEAD~1 --mixed
+    save = !git add -A && git commit -m 'chore: commit save point'
+[user]
+	email = drumondlorenzo@posteo.net
+	name = Lorenzo Drumond
+[pull]
+	rebase = false
+[sendemail]
+	sendmailCmd = /usr/bin/msmtp -a posteo
