@@ -1,0 +1,49 @@
+# Accounts
+IMAPAccount posteo
+Host posteo.de
+Port 993
+User drumondlorenzo@posteo.net
+Pass "{{ gopass `Email/drumondlorenzo@posteo.net` }}"
+SSLType IMAPS
+
+IMAPAccount gmail
+Host imap.gmail.com
+Port 993
+User drumondlorenzo@gmail.com
+Pass "{{ gopass `Email/drumondlorenzo@gmail.com` }}"
+SSLType IMAPS
+
+# Stores
+IMAPStore posteo-remote
+Account posteo
+
+IMAPStore gmail-remote
+Account gmail
+
+# Local
+MaildirStore posteo-local
+Subfolders Verbatim
+Path ~/Documents/Mail/Posteo/
+Inbox ~/Documents/Mail/Posteo/INBOX
+
+MaildirStore gmail-local
+Subfolders Verbatim
+Path ~/Documents/Mail/GMAIL/
+Inbox ~/Documents/Mail/GMAIL/INBOX
+
+# Channels
+Channel posteo
+Far :posteo-remote:
+Near :posteo-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
+
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *
