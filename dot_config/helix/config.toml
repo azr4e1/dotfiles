@@ -1,0 +1,61 @@
+theme = 'adwaita-dark'
+
+[editor]
+mouse = true
+cursorline = true
+# line-number = "relative"
+
+[editor.cursor-shape]
+insert = 'bar'
+normal = 'block'
+select = 'underline'
+
+[editor.statusline]
+# separator = "|"
+left = ["mode", "spinner", "file-name", "file-modification-indicator", "read-only-indicator"]
+center = ["version-control"]
+right = ["diagnostics", "register", "primary-selection-length", "selections", "position", "position-percentage"]
+
+[editor.indent-guides]
+render = false
+skip-levels = 0
+# character = "⸽" # Some characters that work well: "▏", "┆", "┊", "⸽", "╎"
+
+[editor.lsp]
+display-signature-help-docs = false
+
+[editor.soft-wrap]
+enable = true
+
+[keys.insert]
+A-ret = 'completion'
+
+[keys.normal]
+A-X = 'extend_line_above'
+
+[keys.normal.'space']
+backspace = ':reset-diff-change'
+c = ':toggle-option cursorcolumn'
+
+[keys.normal.'\']
+# create panes
+v = [''':sh tmux split-window -h -c "#{pane_current_path}" -l 33%''']
+b = [''':sh tmux split-window -v -c "#{pane_current_path}" -l 33%''']
+space = ['extend_to_line_bounds', ''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''', 'move_visual_line_down']
+# create session
+S = [''':sh tmux new-session -d -s "repl" -c "#{pane_current_path}"''']
+# send to session
+s = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t "repl:1" \; send-keys -t "repl:1" Enter''']
+# send to panes
+l = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''']
+k = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{up-of}' \; send-keys -t '{up-of}' Enter''']
+j = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{down-of}' \; send-keys -t '{down-of}' Enter''']
+h = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{left-of}' \; send-keys -t '{left-of}' Enter''']
+
+[keys.select.'\']
+l = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''']
+k = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{up-of}' \; send-keys -t '{up-of}' Enter''']
+j = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{down-of}' \; send-keys -t '{down-of}' Enter''']
+h = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{left-of}' \; send-keys -t '{left-of}' Enter''']
+# send to session
+s = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t "repl:1" \; send-keys -t "repl:1" Enter''']

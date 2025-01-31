@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+args=$1
+if [ "$args" = "up" ]; then
+    nmcli con up id "se-sto-wg-001"
+    notify-send "VPN Connected" --icon "/home/ld/Pictures/Pics/Logos/network-vpn-symbolic.svg"
+elif [ "$args" = "down" ]; then
+    nmcli con down id "se-sto-wg-001"
+    notify-send "VPN Disconnected" --icon "/home/ld/Pictures/Pics/Logos/network-vpn-disconnected-symbolic.svg"
+fi
