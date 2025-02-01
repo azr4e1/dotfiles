@@ -42,7 +42,8 @@ sudo dnf install -y ripgrep \
                     tmux \
                     jq \
                     podman \
-                    hugo
+                    hugo \
+                    wl-clipboard
 
 echo -e "\n\n\n${green}Installing flatpaks...$reset"
 flatpak install -y app.drey.EarTag \
