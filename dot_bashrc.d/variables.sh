@@ -22,6 +22,7 @@ export reset="\e[0m"
 export EDITOR='hx'
 export VISUAL="$EDITOR"
 export BROWSER="firefox"
+export PAGER="bat --style='plain,rule'"
 
 export MOZ_ENABLE_WAYLAND=1
 
