@@ -43,7 +43,8 @@ sudo dnf install -y ripgrep \
                     jq \
                     podman \
                     hugo \
-                    wl-clipboard
+                    wl-clipboard \
+                    toolbox
 
 echo -e "\n\n\n${green}Installing flatpaks...$reset"
 flatpak install -y app.drey.EarTag \
