@@ -21,9 +21,9 @@ fi
 unset rc
 
 # User specific environment
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:" ]]
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:" ]]
 then
-PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:$PATH"
+PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:$PATH"
 fi
 export PATH
 
