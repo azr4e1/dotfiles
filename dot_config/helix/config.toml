@@ -1,4 +1,4 @@
-theme = 'dracula'
+theme = 'adwaita-dark'
 
 [editor]
 mouse = true
