@@ -1,4 +1,4 @@
-theme = 'adwaita-dark'
+theme = 'tokyonight_storm'
 
 [editor]
 mouse = true
