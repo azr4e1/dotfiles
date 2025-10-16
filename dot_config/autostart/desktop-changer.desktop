@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Change Wallpaper
+GenericName=Wallpaper
+Comment=Change the wallpaper at every reboot
+Exec=/home/ld/.local/bin/desktop-changer.sh
+Terminal=false
