@@ -10,6 +10,7 @@
     res = !git reset --hard
     undo = reset HEAD~1 --mixed
     save = !git add -A && git commit -m 'chore: commit save point'
+    sp = !git add -A && git commit -m 'chore: commit save point' && git push
 [user]
 	email = drumondlorenzo@posteo.net
 	name = Lorenzo Drumond
