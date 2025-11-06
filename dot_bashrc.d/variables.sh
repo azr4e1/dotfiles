@@ -76,3 +76,4 @@ export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 # export GPODDER_DOWNLOAD_DIR=~/Desktop/Podcasts/
 
 export GOPATH="$HOME/.go"
+export AIRFLOW_HOME="$HOME/.local/share/airflow"
