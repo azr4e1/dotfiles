@@ -39,8 +39,8 @@ c = ':toggle-option cursorcolumn'
 
 [keys.normal.'\']
 # create panes
-v = [''':sh tmux split-window -h -c "#{pane_current_path}" -l 33%''']
-b = [''':sh tmux split-window -v -c "#{pane_current_path}" -l 33%''']
+v = [''':sh tmux split-window -h -c "#{pane_current_path}" -l 33%%''']
+b = [''':sh tmux split-window -v -c "#{pane_current_path}" -l 33%%''']
 space = ['extend_to_line_bounds', ''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''', 'move_visual_line_down']
 # create session
 S = [''':sh tmux new-session -d -s "repl" -c "#{pane_current_path}"''']
