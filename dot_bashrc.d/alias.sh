@@ -34,7 +34,7 @@ alias remote-umount="fusermount -u /home/ld/Desktop/Mount/"
 alias cdm="cd /home/ld/Desktop/Mount/"
 
 # keep awake
-alias docker=podman
+# alias docker=podman
 
 # taskwarrior
 alias t=task
