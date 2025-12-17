@@ -1,0 +1,184 @@
+#!/bin/bash
+
+CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/wiki/config"
+
+[[ -f "$CONFIG_FILE" ]] && source "$CONFIG_FILE"
+
+HUGO_DIR="${WIKI_HUGO_DIR:-${HUGO_DIR}}"
+WIKI_DIR="${WIKI_WIKI_DIR:-${WIKI_DIR}}"
+
+show_help() {
+    cat << EOF
+Usage: $(basename "$0") [OPTIONS]
+
+Browse and manage Hugo wiki articles.
+
+Options:
+    -t TAGS     Filter articles by comma-separated tags
+    -n NAME     Create new article with hugo new and open in editor
+    -e          Edit mode: select and open article in editor
+    -h          Show this help message
+
+Examples:
+    $(basename "$0")                    # Browse all wiki articles
+    $(basename "$0") -t python,data     # Filter by tags
+    $(basename "$0") -n my-new-article  # Create and edit new article
+    $(basename "$0") -e                 # Select and edit article
+EOF
+}
+
+strip_frontmatter() {
+    local file="$1"
+    awk '
+        BEGIN { in_frontmatter=0; frontmatter_count=0 }
+        /^\+\+\+/ {
+            frontmatter_count++
+            if (frontmatter_count == 2) { in_frontmatter=0; next }
+            in_frontmatter=1
+            next
+        }
+        !in_frontmatter { print }
+    ' "$file"
+}
+
+preview_article() {
+    local file="$1"
+    strip_frontmatter "$file" | glow -
+}
+
+view_article() {
+    local file="$1"
+    local term_height
+    local rendered_lines
+    local term_width
+    local rendered
+    local min_term_width
+    local default_term_width=80
+    
+    term_height=$(tput lines)
+    term_width=$(tput cols)
+    if [[ "$term_width" -lt "$default_term_width" ]]; then
+        min_term_width=$term_width
+    else
+        min_term_width=$default_term_width
+    fi
+    rendered=$(strip_frontmatter "$file" | glow -w "$min_term_width" -)
+    rendered_lines=$(echo "$rendered" | wc -l)
+    
+    if [[ "$rendered_lines" -lt "$term_height" ]]; then
+        strip_frontmatter "$file" | glow -w "$min_term_width" -
+    else
+        strip_frontmatter "$file" | glow -w "$min_term_width" --tui -
+    fi
+}
+
+browse_articles() {
+    local files="$1"
+    local edit_mode="$2"
+    
+    if [[ -z "$files" ]]; then
+        echo "No articles found."
+        exit 1
+    fi
+    
+    local selected
+    selected=$(echo "$files" | fzf \
+        --delimiter / --with-nth -1 \
+        --preview "$(declare -f strip_frontmatter); strip_frontmatter {} | glow -" \
+        --bind "ctrl-e:execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)" \
+        --header "ctrl-e: edit in editor")
+    
+    [[ -z "$selected" ]] && exit 0
+    
+    if [[ "$edit_mode" == "true" ]]; then
+        "${EDITOR:-vim}" "$selected"
+    else
+        view_article "$selected"
+    fi
+}
+
+filter_by_tags() {
+    local tags="$1"
+    local edit_mode="$2"
+    local IFS=','
+    read -ra tag_array <<< "$tags"
+    
+    local pattern=""
+    for tag in "${tag_array[@]}"; do
+        tag=$(echo "$tag" | xargs)
+        if [[ -n "$pattern" ]]; then
+            pattern="$pattern|$tag"
+        else
+            pattern="$tag"
+        fi
+    done
+    
+    local files
+    files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
+        xargs ls -t 2>/dev/null)
+    
+    browse_articles "$files" "$edit_mode"
+}
+
+create_article() {
+    cd "$HUGO_DIR" || exit 1
+    local name="$1"
+    
+    [[ "$name" != *.md ]] && name="${name}.md"
+    
+    local path="wiki/$name"
+    
+    if hugo new "$path"; then
+        local full_path="$WIKI_DIR/$name"
+        echo "Created: $full_path"
+        "${EDITOR:-vim}" "$full_path"
+    else
+        echo "Failed to create article."
+        exit 1
+    fi
+}
+
+list_all() {
+    local edit_mode="$1"
+    local files
+    files=$(rg --files "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
+        xargs ls -t 2>/dev/null)
+    browse_articles "$files" "$edit_mode"
+}
+
+EDIT_MODE=false
+FILTER_TAGS=""
+
+while getopts ":t:n:eh" opt; do
+    case $opt in
+        t)
+            FILTER_TAGS="$OPTARG"
+            ;;
+        n)
+            create_article "$OPTARG"
+            exit 0
+            ;;
+        e)
+            EDIT_MODE=true
+            ;;
+        h)
+            show_help
+            exit 0
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            show_help
+            exit 1
+            ;;
+        :)
+            echo "Option -$OPTARG requires an argument." >&2
+            exit 1
+            ;;
+    esac
+done
+
+if [[ -n "$FILTER_TAGS" ]]; then
+    filter_by_tags "$FILTER_TAGS" "$EDIT_MODE"
+else
+    list_all "$EDIT_MODE"
+fi

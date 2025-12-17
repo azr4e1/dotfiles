@@ -43,9 +43,13 @@ if [ -f '/home/ld/.google-cloud-sdk/completion.bash.inc' ]; then . '/home/ld/.go
 # cabal completion
 [ -f "/home/ld/.config/bash-completion/cabal" ] && source "/home/ld/.config/bash-completion/cabal"
 
-# Enable fuzzy finding (fzf)
-[[ -f "/usr/share/fzf/shell/key-bindings.bash" ]] && . /usr/share/fzf/shell/key-bindings.bash
-[[ -f "$HOME/config/fzf/fzf.bash" ]] && . $HOME/config/fzf/fzf.bash
+# Set up fzf key bindings and fuzzy completion
+export FZF_DEFAULT_OPTS="
+  --height 50%
+  --layout=reverse
+  --bind 'tab:down,shift-tab:up',ctrl-j:down,ctrl-k:up"
+
+eval "$(fzf --bash)"
 
 # tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
