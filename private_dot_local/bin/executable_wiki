@@ -6,6 +6,7 @@ CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/wiki/config"
 
 HUGO_DIR="${WIKI_HUGO_DIR:-${HUGO_DIR}}"
 WIKI_DIR="${WIKI_WIKI_DIR:-${WIKI_DIR}}"
+WIKI_PAGER="${WIKI_WIKI_PAGER:-bat}"
 
 show_help() {
     cat << EOF
@@ -17,89 +18,113 @@ Options:
     -t TAGS     Filter articles by comma-separated tags
     -n NAME     Create new article with hugo new and open in editor
     -e          Edit mode: select and open article in editor
+    -i          Interactive mode: loop back to fzf after viewing
     -h          Show this help message
+
+Configuration:
+    WIKI_PAGER  Set to 'bat' or 'glow' (default: bat)
 
 Examples:
     $(basename "$0")                    # Browse all wiki articles
     $(basename "$0") -t python,data     # Filter by tags
     $(basename "$0") -n my-new-article  # Create and edit new article
     $(basename "$0") -e                 # Select and edit article
+    $(basename "$0") -i                 # Interactive browsing mode
 EOF
 }
 
 strip_frontmatter() {
     local file="$1"
     awk '
-        BEGIN { in_frontmatter=0; frontmatter_count=0 }
-        /^\+\+\+/ {
-            frontmatter_count++
-            if (frontmatter_count == 2) { in_frontmatter=0; next }
-            in_frontmatter=1
-            next
+        BEGIN { in_frontmatter=0; frontmatter_count=0; delimiter="" }
+        /^\+\+\+/ || /^---/ {
+            if (delimiter == "") {
+                delimiter = $0
+                in_frontmatter = 1
+                frontmatter_count++
+                next
+            }
+            if ($0 == delimiter) {
+                frontmatter_count++
+                if (frontmatter_count == 2) {
+                    in_frontmatter = 0
+                    next
+                }
+            }
         }
         !in_frontmatter { print }
     ' "$file"
 }
 
-preview_article() {
-    local file="$1"
-    strip_frontmatter "$file" | glow -
-}
-
 view_article() {
     local file="$1"
+    local force_pager="$2"
     local term_height
-    local rendered_lines
     local term_width
-    local rendered
-    local min_term_width
-    local default_term_width=80
+    local rendered_lines
     
     term_height=$(tput lines)
     term_width=$(tput cols)
-    if [[ "$term_width" -lt "$default_term_width" ]]; then
-        min_term_width=$term_width
-    else
-        min_term_width=$default_term_width
-    fi
-    rendered=$(strip_frontmatter "$file" | glow -w "$min_term_width" -)
-    rendered_lines=$(echo "$rendered" | wc -l)
     
-    if [[ "$rendered_lines" -lt "$term_height" ]]; then
-        strip_frontmatter "$file" | glow -w "$min_term_width" -
+    if [[ "$WIKI_PAGER" == "glow" ]]; then
+        rendered_lines=$(strip_frontmatter "$file" | wc -l)
+        
+        if [[ "$force_pager" == "true" || "$rendered_lines" -ge "$term_height" ]]; then
+            strip_frontmatter "$file" | glow -w "$term_width" --tui -
+        else
+            strip_frontmatter "$file" | glow -w "$term_width" -
+        fi
     else
-        strip_frontmatter "$file" | glow -w "$min_term_width" --tui -
+        if [[ "$force_pager" == "true" ]]; then
+            strip_frontmatter "$file" | bat --language md --style plain --paging always
+        else
+            strip_frontmatter "$file" | bat --language md --style plain
+        fi
+    fi
+}
+
+preview_command() {
+    if [[ "$WIKI_PAGER" == "glow" ]]; then
+        echo "glow -"
+    else
+        echo "bat --language md --style plain --color always"
     fi
 }
 
 browse_articles() {
     local files="$1"
     local edit_mode="$2"
+    local interactive_mode="$3"
     
     if [[ -z "$files" ]]; then
         echo "No articles found."
         exit 1
     fi
     
-    local selected
-    selected=$(echo "$files" | fzf \
-        --delimiter / --with-nth -1 \
-        --preview "$(declare -f strip_frontmatter); strip_frontmatter {} | glow -" \
-        --bind "ctrl-e:execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)" \
-        --header "ctrl-e: edit in editor")
-    
-    [[ -z "$selected" ]] && exit 0
-    
-    if [[ "$edit_mode" == "true" ]]; then
-        "${EDITOR:-vim}" "$selected"
-    else
-        view_article "$selected"
-    fi
+    while true; do
+        local selected
+        selected=$(echo "$files" | fzf \
+            --delimiter / --with-nth -1 \
+            --preview "$(declare -f strip_frontmatter); strip_frontmatter {} | $(preview_command)" \
+            --bind "ctrl-e:execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)" \
+            --header "ctrl-e: edit in editor")
+        
+        [[ -z "$selected" ]] && break
+        
+        if [[ "$edit_mode" == "true" ]]; then
+            "${EDITOR:-vim}" "$selected"
+        else
+            view_article "$selected" "$interactive_mode"
+        fi
+        
+        [[ "$interactive_mode" != "true" ]] && break
+    done
 }
 
 filter_by_tags() {
     local tags="$1"
     local edit_mode="$2"
+    local interactive_mode="$3"
     local IFS=','
     read -ra tag_array <<< "$tags"
     
@@ -117,7 +142,7 @@ filter_by_tags() {
     files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
         xargs ls -t 2>/dev/null)
     
-    browse_articles "$files" "$edit_mode"
+    browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
 
 create_article() {
@@ -140,16 +165,18 @@ create_article() {
 
 list_all() {
     local edit_mode="$1"
+    local interactive_mode="$2"
     local files
     files=$(rg --files "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
         xargs ls -t 2>/dev/null)
-    browse_articles "$files" "$edit_mode"
+    browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
 
 EDIT_MODE=false
 FILTER_TAGS=""
+INTERACTIVE_MODE=false
 
-while getopts ":t:n:eh" opt; do
+while getopts ":t:n:eih" opt; do
     case $opt in
         t)
             FILTER_TAGS="$OPTARG"
@@ -160,6 +187,9 @@ while getopts ":t:n:eh" opt; do
             ;;
         e)
             EDIT_MODE=true
+            ;;
+        i)
+            INTERACTIVE_MODE=true
             ;;
         h)
             show_help
@@ -178,7 +208,7 @@ while getopts ":t:n:eh" opt; do
 done
 
 if [[ -n "$FILTER_TAGS" ]]; then
-    filter_by_tags "$FILTER_TAGS" "$EDIT_MODE"
+    filter_by_tags "$FILTER_TAGS" "$EDIT_MODE" "$INTERACTIVE_MODE"
 else
-    list_all "$EDIT_MODE"
+    list_all "$EDIT_MODE" "$INTERACTIVE_MODE"
 fi
