@@ -6,7 +6,7 @@ CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/wiki/config"
 
 HUGO_DIR="${WIKI_HUGO_DIR:-${HUGO_DIR}}"
 WIKI_DIR="${WIKI_WIKI_DIR:-${WIKI_DIR}}"
-WIKI_PAGER="${WIKI_WIKI_PAGER:-bat}"
+WIKI_PAGER="${WIKI_WIKI_PAGER:-${WIKI_PAGER}}"
 
 show_help() {
     cat << EOF
