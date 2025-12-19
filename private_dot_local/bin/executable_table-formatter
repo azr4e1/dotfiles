@@ -81,7 +81,8 @@ class Table:
         for row in self.header:
             row_strings.append(row.render(padding))
 
-        row_strings.append(separator)
+        if row_strings:
+            row_strings.append(separator)
 
         for row in self.rows:
             row_strings.append(row.render(padding))
@@ -95,23 +96,22 @@ class Table:
         headers = []
         table_rows = []
 
-        body = False
         for row in rows:
             if row.strip() == "":
                 continue
             elements = set(row)
             if elements.issubset(separator_els):
-                body = True
+                headers = table_rows
+                table_rows = []
                 continue
             clean_row = [el.strip()
                          for el in row.split("|") if el != ""]
             new_row = TableRow(clean_row)
 
-            if body:
-                table_rows.append(new_row)
-            else:
-                headers.append(new_row)
+            table_rows.append(new_row)
 
+        if not table_rows:
+            table_rows.append(TableRow([""]))
         table = Table(headers, table_rows)
 
         return table
