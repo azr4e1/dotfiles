@@ -12,6 +12,13 @@ class TableRow:
     def __len__(self):
         return len(self.row)
 
+    @staticmethod
+    def __pad(word: str, length: int):
+        while len(word) < length:
+            word += " "
+
+        return word
+
     def render(self, padding: int | list[int] = None):
         row = self.row
         if isinstance(padding, int):
@@ -20,7 +27,7 @@ class TableRow:
             if len(padding) != len(self.row):
                 raise Exception(
                     "mismatch between padding length and row elements")
-            row = [el.center(pad) for el, pad in zip(self.row, padding)]
+            row = [self.__pad(el, pad) for el, pad in zip(self.row, padding)]
         row_string = "| " + " | ".join(row) + " |"
 
         return row_string
@@ -50,10 +57,8 @@ class Table:
             self.__pad_row(row, max_length)
 
     def __pad_row(self, row: TableRow, length: int):
-        i = len(row)
-        while i < length:
+        while len(row) < length:
             row.add("")
-            i += 1
 
     def to_columns(self):
         table = [[] for _ in self.rows[0]]
@@ -99,7 +104,7 @@ class Table:
                 body = True
                 continue
             clean_row = [el.strip()
-                         for el in row.split("|") if el.strip() != ""]
+                         for el in row.split("|") if el != ""]
             new_row = TableRow(clean_row)
 
             if body:
@@ -113,10 +118,14 @@ class Table:
 
 
 if __name__ == "__main__":
-    input = sys.argv[1]
-
-    with open(input) as f:
-        content = f.read()
+    if not sys.stdin.isatty():
+        content = sys.stdin.read()
+    elif len(sys.argv) > 1:
+        input = sys.argv[1]
+        with open(input) as f:
+            content = f.read()
+    else:
+        sys.exit(1)
 
     table = Table.parse(content)
 
