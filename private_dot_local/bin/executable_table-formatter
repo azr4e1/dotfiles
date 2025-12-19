@@ -1,0 +1,123 @@
+#!/usr/bin/env python
+
+from dataclasses import dataclass
+import sys
+# from typing import Union
+
+
+@dataclass
+class TableRow:
+    row: list[str]
+
+    def __len__(self):
+        return len(self.row)
+
+    def render(self, padding: int | list[int] = None):
+        row = self.row
+        if isinstance(padding, int):
+            row = [el.center(padding) for el in self.row]
+        elif isinstance(padding, list):
+            if len(padding) != len(self.row):
+                raise Exception(
+                    "mismatch between padding length and row elements")
+            row = [el.center(pad) for el, pad in zip(self.row, padding)]
+        row_string = "| " + " | ".join(row) + " |"
+
+        return row_string
+
+    def add(self, el: str):
+        self.row.append(el)
+
+    def pop(self):
+        if len(self.row) == 0:
+            return None
+        el = self.row[-1]
+        self.row = self.row[:-1]
+        return el
+
+    def __iter__(self):
+        return iter(self.row)
+
+
+@dataclass
+class Table:
+    header: list[TableRow]
+    rows: list[TableRow]
+
+    def __post_init__(self):
+        max_length = max(len(x) for x in self.rows + self.header)
+        for row in self.rows + self.header:
+            self.__pad_row(row, max_length)
+
+    def __pad_row(self, row: TableRow, length: int):
+        i = len(row)
+        while i < length:
+            row.add("")
+            i += 1
+
+    def to_columns(self):
+        table = [[] for _ in self.rows[0]]
+        for row in self.header + self.rows:
+            for i, el in enumerate(row):
+                table[i].append(el)
+
+        return table
+
+    def get_padding(self):
+        table_col = self.to_columns()
+        padding = [max(len(x) for x in col) for col in table_col]
+
+        return padding
+
+    def render(self):
+        padding = self.get_padding()
+        separator = "|-" + "-|-".join(["-"*pad for pad in padding]) + "-|"
+        row_strings = []
+        for row in self.header:
+            row_strings.append(row.render(padding))
+
+        row_strings.append(separator)
+
+        for row in self.rows:
+            row_strings.append(row.render(padding))
+
+        return "\n".join(row_strings)
+
+    @staticmethod
+    def parse(input: str):
+        separator_els = {"|", "-"}
+        rows = input.split("\n")
+        headers = []
+        table_rows = []
+
+        body = False
+        for row in rows:
+            if row.strip() == "":
+                continue
+            elements = set(row)
+            if elements.issubset(separator_els):
+                body = True
+                continue
+            clean_row = [el.strip()
+                         for el in row.split("|") if el.strip() != ""]
+            new_row = TableRow(clean_row)
+
+            if body:
+                table_rows.append(new_row)
+            else:
+                headers.append(new_row)
+
+        table = Table(headers, table_rows)
+
+        return table
+
+
+if __name__ == "__main__":
+    input = sys.argv[1]
+
+    with open(input) as f:
+        content = f.read()
+
+    table = Table.parse(content)
+
+    print(table.render())
