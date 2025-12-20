@@ -51,6 +51,7 @@ l = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send
 k = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{up-of}' \; send-keys -t '{up-of}' Enter''']
 j = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{down-of}' \; send-keys -t '{down-of}' Enter''']
 h = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{left-of}' \; send-keys -t '{left-of}' Enter''']
+f = [':pipe table-formatter']
 
 [keys.select.'\']
 l = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{right-of}' \; send-keys -t '{right-of}' Enter''']
@@ -59,3 +60,4 @@ j = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{down-of}' \; send-
 h = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t '{left-of}' \; send-keys -t '{left-of}' Enter''']
 # send to session
 s = [''':pipe-to tmux load-buffer - \; paste-buffer -dpr -t "repl:1" \; send-keys -t "repl:1" Enter''']
+f = [':pipe table-formatter']
