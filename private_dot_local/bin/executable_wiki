@@ -19,6 +19,7 @@ Options:
     -n NAME     Create new article with hugo new and open in editor
     -e          Edit mode: select and open article in editor
     -i          Interactive mode: loop back to fzf after viewing
+    -s          Sync: commit changes and pull/push with remote
     -h          Show this help message
 
 Configuration:
@@ -30,6 +31,7 @@ Examples:
     $(basename "$0") -n my-new-article  # Create and edit new article
     $(basename "$0") -e                 # Select and edit article
     $(basename "$0") -i                 # Interactive browsing mode
+    $(basename "$0") -s                 # Sync with remote
 EOF
 }
 
@@ -163,6 +165,40 @@ create_article() {
     fi
 }
 
+sync_wiki() {
+    cd "$HUGO_DIR" || exit 1
+    
+    if ! git rev-parse --is-inside-work-tree &>/dev/null; then
+        echo "Error: $HUGO_DIR is not a git repository."
+        exit 1
+    fi
+    
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "Committing local changes..."
+        git add -A
+        if ! git commit -m "wiki sync: $(date '+%Y-%m-%d %H:%M:%S')"; then
+            echo "Error: Failed to commit changes."
+            exit 1
+        fi
+    else
+        echo "No local changes to commit."
+    fi
+    
+    echo "Pulling from remote..."
+    if ! git pull --rebase; then
+        echo "Error: Failed to pull from remote."
+        exit 1
+    fi
+    
+    echo "Pushing to remote..."
+    if ! git push; then
+        echo "Error: Failed to push to remote."
+        exit 1
+    fi
+    
+    echo "Sync complete."
+}
+
 list_all() {
     local edit_mode="$1"
     local interactive_mode="$2"
@@ -176,7 +212,7 @@ EDIT_MODE=false
 FILTER_TAGS=""
 INTERACTIVE_MODE=false
 
-while getopts ":t:n:eih" opt; do
+while getopts ":t:n:eish" opt; do
     case $opt in
         t)
             FILTER_TAGS="$OPTARG"
@@ -190,6 +226,10 @@ while getopts ":t:n:eih" opt; do
             ;;
         i)
             INTERACTIVE_MODE=true
+            ;;
+        s)
+            sync_wiki
+            exit 0
             ;;
         h)
             show_help
