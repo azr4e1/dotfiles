@@ -58,6 +58,41 @@ strip_frontmatter() {
     ' "$file"
 }
 
+get_date() {
+    local file="$1"
+    awk '
+        BEGIN { in_frontmatter=0; delimiter="" }
+        /^\+\+\+/ || /^---/ {
+            if (delimiter == "") {
+                delimiter = $0
+                in_frontmatter = 1
+                next
+            }
+            if ($0 == delimiter) {
+                exit
+            }
+        }
+        in_frontmatter && /^date\s*(=|:)/ {
+            gsub(/^date\s*(=|:)\s*/, "")
+            gsub(/["\047]/, "")
+            gsub(/T/, " ")
+            print
+            exit
+        }
+    ' "$file"
+}
+
+sort_by_date() {
+    local files="$1"
+    
+    while IFS= read -r file; do
+        [[ -z "$file" ]] && continue
+        local date
+        date=$(get_date "$file")
+        echo "${date:-0000-00-00}	$file"
+    done <<< "$files" | sort -t$'\t' -k1 -r | cut -f2
+}
+
 view_article() {
     local file="$1"
     local force_pager="$2"
@@ -141,8 +176,8 @@ filter_by_tags() {
     done
     
     local files
-    files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
-        xargs ls -t 2>/dev/null)
+    files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
+    files=$(sort_by_date "$files")
     
     browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
@@ -203,8 +238,8 @@ list_all() {
     local edit_mode="$1"
     local interactive_mode="$2"
     local files
-    files=$(rg --files "$WIKI_DIR" --glob "*.md" --glob "!_index.md" | \
-        xargs ls -t 2>/dev/null)
+    files=$(rg --files "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
+    files=$(sort_by_date "$files")
     browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
 
