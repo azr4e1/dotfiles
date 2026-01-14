@@ -20,6 +20,7 @@ Options:
     -e          Edit mode: select and open article in editor
     -i          Interactive mode: loop back to fzf after viewing
     -s          Sync: commit changes and pull/push with remote
+    -z          Sort by article date as specified in frontmatter
     -h          Show this help message
 
 Configuration:
@@ -32,6 +33,7 @@ Examples:
     $(basename "$0") -e                 # Select and edit article
     $(basename "$0") -i                 # Interactive browsing mode
     $(basename "$0") -s                 # Sync with remote
+    $(basename "$0") -z                 # Sort by article date
 EOF
 }
 
@@ -84,13 +86,18 @@ get_date() {
 
 sort_by_date() {
     local files="$1"
+    local sort_type="$2"
     
-    while IFS= read -r file; do
-        [[ -z "$file" ]] && continue
-        local date
-        date=$(get_date "$file")
-        echo "${date:-0000-00-00}	$file"
-    done <<< "$files" | sort -t$'\t' -k1 -r | cut -f2
+    if [[ "$sort_type" == "article_date" ]]; then
+        while IFS= read -r file; do
+            [[ -z "$file" ]] && continue
+            local date
+            date=$(get_date "$file")
+            echo "${date:-0000-00-00}	$file"
+        done <<< "$files" | sort -t$'\t' -k1 -r | cut -f2
+    else
+        echo $files | xargs ls -t 2>/dev/null
+    fi
 }
 
 view_article() {
@@ -162,6 +169,7 @@ filter_by_tags() {
     local tags="$1"
     local edit_mode="$2"
     local interactive_mode="$3"
+    local sort_mode="$4"
     local IFS=','
     read -ra tag_array <<< "$tags"
     
@@ -177,7 +185,7 @@ filter_by_tags() {
     
     local files
     files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
-    files=$(sort_by_date "$files")
+    files=$(sort_by_date "$files" "$sort_mode")
     
     browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
@@ -237,9 +245,10 @@ sync_wiki() {
 list_all() {
     local edit_mode="$1"
     local interactive_mode="$2"
+    local sort_mode="$3"
     local files
     files=$(rg --files "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
-    files=$(sort_by_date "$files")
+    files=$(sort_by_date "$files" "$sort_mode")
     browse_articles "$files" "$edit_mode" "$interactive_mode"
 }
 
@@ -247,7 +256,7 @@ EDIT_MODE=false
 FILTER_TAGS=""
 INTERACTIVE_MODE=false
 
-while getopts ":t:n:eish" opt; do
+while getopts ":t:n:eiszh" opt; do
     case $opt in
         t)
             FILTER_TAGS="$OPTARG"
@@ -266,6 +275,9 @@ while getopts ":t:n:eish" opt; do
             sync_wiki
             exit 0
             ;;
+        z)
+            SORT_MODE="article_date"
+            ;;
         h)
             show_help
             exit 0
@@ -283,7 +295,7 @@ while getopts ":t:n:eish" opt; do
 done
 
 if [[ -n "$FILTER_TAGS" ]]; then
-    filter_by_tags "$FILTER_TAGS" "$EDIT_MODE" "$INTERACTIVE_MODE"
+    filter_by_tags "$FILTER_TAGS" "$EDIT_MODE" "$INTERACTIVE_MODE" "$SORT_MODE"
 else
-    list_all "$EDIT_MODE" "$INTERACTIVE_MODE"
+    list_all "$EDIT_MODE" "$INTERACTIVE_MODE" "$SORT_MODE"
 fi
