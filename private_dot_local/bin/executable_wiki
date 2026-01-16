@@ -87,6 +87,8 @@ get_date() {
 sort_by_date() {
     local files="$1"
     local sort_type="$2"
+
+    [[ -z "$files" ]] && return
     
     if [[ "$sort_type" == "article_date" ]]; then
         while IFS= read -r file; do
@@ -96,7 +98,7 @@ sort_by_date() {
             echo "${date:-0000-00-00}	$file"
         done <<< "$files" | sort -t$'\t' -k1 -r | cut -f2
     else
-        echo $files | xargs ls -t 2>/dev/null
+        echo "$files" | xargs ls -t 2>/dev/null
     fi
 }
 
