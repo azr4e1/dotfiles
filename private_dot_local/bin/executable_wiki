@@ -21,6 +21,7 @@ Options:
     -i          Interactive mode: loop back to fzf after viewing
     -s          Sync: commit changes and pull/push with remote
     -z          Sort by article date as specified in frontmatter
+    -r          Render and server the Hugo website
     -h          Show this help message
 
 Configuration:
@@ -34,6 +35,7 @@ Examples:
     $(basename "$0") -i                 # Interactive browsing mode
     $(basename "$0") -s                 # Sync with remote
     $(basename "$0") -z                 # Sort by article date
+    $(basename "$0") -r                 # Render and serve the website
 EOF
 }
 
@@ -219,6 +221,11 @@ create_article() {
     fi
 }
 
+render_website() {
+    cd "$HUGO_DIR" || exit 1
+    hugo server || exit 1
+}
+
 sync_wiki() {
     cd "$HUGO_DIR" || exit 1
     
@@ -267,7 +274,7 @@ EDIT_MODE=false
 FILTER_TAGS=""
 INTERACTIVE_MODE=false
 
-while getopts ":t:n:eiszh" opt; do
+while getopts ":t:n:eiszrh" opt; do
     case $opt in
         t)
             FILTER_TAGS="$OPTARG"
@@ -288,6 +295,10 @@ while getopts ":t:n:eiszh" opt; do
             ;;
         z)
             SORT_MODE="article_date"
+            ;;
+        r)
+            render_website
+            exit 0
             ;;
         h)
             show_help
