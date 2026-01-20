@@ -188,7 +188,7 @@ filter_by_tags() {
     done
     
     local files
-    files=$(rg -l "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
+    files=$(rg -li "tags\s*(=|:)\s*.*($pattern)" "$WIKI_DIR" --glob "*.md" --glob "!_index.md")
     files=$(sort_by_date "$files" "$sort_mode")
     
     browse_articles "$files" "$edit_mode" "$interactive_mode"
