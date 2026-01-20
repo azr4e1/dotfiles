@@ -24,8 +24,17 @@ Options:
     -r          Render and server the Hugo website
     -h          Show this help message
 
-Configuration:
+Configuration (at XDG_CONFIG_HOME/wiki/config):
+    HUGO_DIR    Set hugo directory
+    WIKI_DIR    Set wiki directory inside the hugo content directory
     WIKI_PAGER  Set to 'bat' or 'glow' (default: bat)
+
+Environmental Variables:
+    WIKI_HUGO_DIR    Set hugo directory
+    WIKI_WIKI_DIR    Set wiki directory inside the hugo content directory
+    WIKI_WIKI_PAGER  Set to 'bat' or 'glow' (default: bat)
+
+NB: Env variables have precedence over configuration
 
 Examples:
     $(basename "$0")                    # Browse all wiki articles
