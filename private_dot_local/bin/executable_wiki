@@ -198,10 +198,19 @@ create_article() {
     
     [[ "$name" != *.md ]] && name="${name}.md"
     
-    local path="wiki/$name"
+    # remove trailing slash if present:w
+    local wiki_dir="${WIKI_DIR%/}"
+    local hugo_dir="${HUGO_DIR%/}"
+    local content_dir="$hugo_dir/content"
     
-    if hugo new "$path"; then
-        local full_path="$WIKI_DIR/$name"
+    # Strip content_dir with or without trailing slash
+    local relative_path="${wiki_dir#$content_dir}"
+    
+    local hugo_path="$relative_path/$name"
+    hugo_path="${hugo_path#/}"  # Remove leading slash if present
+    
+    if hugo new "$hugo_path"; then
+        local full_path="$wiki_dir/$name"
         echo "Created: $full_path"
         "${EDITOR:-vim}" "$full_path"
     else
