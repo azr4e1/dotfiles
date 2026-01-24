@@ -1,7 +1,7 @@
-###  _               _              
-### | |__   __ _ ___| |__  _ __ ___ 
+###  _               _
+### | |__   __ _ ___| |__  _ __ ___
 ### | '_ \ / _` / __| '_ \| '__/ __|
-### | |_) | (_| \__ \ | | | | | (__ 
+### | |_) | (_| \__ \ | | | | | (__
 ### |_.__/ \__,_|___/_| |_|_|  \___|
 
 # Source global definitions
@@ -21,9 +21,8 @@ fi
 unset rc
 
 # User specific environment
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:" ]]
-then
-PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:$PATH"
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:" ]]; then
+	PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:$PATH"
 fi
 export PATH
 
@@ -52,10 +51,13 @@ export FZF_DEFAULT_OPTS="
 eval "$(fzf --bash)"
 
 # tmux
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+if command -v tmux &>/dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+	# Create secondary session if it doesn't exist
+	tmux has-session -t secondary 2>/dev/null || tmux new-session -d -s secondary
+
 	if tmux has -t main; then
 		exec tmux attach-session -t main
 	else
-	  exec tmux new-session -s main
-    fi
+		exec tmux new-session -s main
+	fi
 fi

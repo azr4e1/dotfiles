@@ -44,7 +44,8 @@ sudo dnf install -y ripgrep \
                     podman \
                     hugo \
                     wl-clipboard \
-                    toolbox
+                    toolbox \
+                    nodejs-bash-language-server
 
 echo -e "\n\n\n${green}Installing flatpaks...$reset"
 flatpak install -y app.drey.EarTag \
@@ -59,7 +60,6 @@ flatpak install -y app.drey.EarTag \
                    com.mattjakeman.ExtensionManager \
                    de.haeckerfelix.Fragments \
                    dev.vencord.Vesktop \
-                   io.github.celluloid_player.Celluloid \
                    org.gimp.GIMP \
                    org.gnome.Decibels \
                    org.gnome.Music \
@@ -67,18 +67,20 @@ flatpak install -y app.drey.EarTag \
                    org.gtk.Gtk3theme.adw-gtk3 \
                    org.gtk.Gtk3theme.adw-gtk3-dark \
                    org.kde.kdenlive \
-                   org.mozilla.Thunderbird
+                   org.mozilla.Thunderbird \
+                   md.obsidian.Obsidian \
+                   org.gnome.Music
 
 echo -e "\n\n\n${green}Installing go binaries...$reset"
 go install github.com/azr4e1/venv-notary/vn@latest
 go install github.com/azr4e1/ggd/cmd/ggd@latest
 go install github.com/azr4e1/polacco@latest
 go install github.com/bitfield/gotestdox/cmd/gotestdox@latest
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
 
 echo -e "\n\n\n${green}Installing lsp services...$reset"
 go install golang.org/x/tools/gopls@latest
 
-npm i -g bash-language-server
 npm i -g vscode-langservers-extracted
 npm install -g dockerfile-language-server-nodejs
 npm install -g typescript typescript-language-server
