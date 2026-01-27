@@ -158,24 +158,48 @@ browse_articles() {
         exit 1
     fi
     
-    while true; do
+    export -f strip_frontmatter
+    export -f view_article
+    export WIKI_PAGER
+    
+    if [[ "$interactive_mode" == "true" ]]; then
+        local enter_action
+        if [[ "$edit_mode" == "true" ]]; then
+            enter_action="execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)"
+        else
+            enter_action='execute(bash -c '\''view_article "$1" true'\'' _ {} < /dev/tty > /dev/tty)'
+        fi
+        
+        echo "$files" | fzf \
+            --delimiter / --with-nth -1 \
+            --preview "$(declare -f strip_frontmatter); strip_frontmatter {} | $(preview_command)" \
+            --bind "ctrl-e:execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)" \
+            --bind "enter:$enter_action" \
+            --bind "tab:down,shift-tab:up" \
+            --bind "ctrl-d:half-page-down,ctrl-u:half-page-up" \
+            --bind "ctrl-t:first,ctrl-b:last" \
+            --cycle \
+            --header "enter: view | ctrl-e: edit | tab/S-tab: nav | ctrl-d/u: page | ctrl-t/b: top/bottom"
+    else
         local selected
         selected=$(echo "$files" | fzf \
             --delimiter / --with-nth -1 \
             --preview "$(declare -f strip_frontmatter); strip_frontmatter {} | $(preview_command)" \
             --bind "ctrl-e:execute(${EDITOR:-vim} {} < /dev/tty > /dev/tty)" \
-            --header "ctrl-e: edit in editor")
+            --bind "tab:down,shift-tab:up" \
+            --bind "ctrl-d:half-page-down,ctrl-u:half-page-up" \
+            --bind "ctrl-t:first,ctrl-b:last" \
+            --cycle \
+            --header "ctrl-e: edit | tab/S-tab: nav | ctrl-d/u: page | ctrl-t/b: top/bottom")
         
-        [[ -z "$selected" ]] && break
+        [[ -z "$selected" ]] && return
         
         if [[ "$edit_mode" == "true" ]]; then
             "${EDITOR:-vim}" "$selected"
         else
-            view_article "$selected" "$interactive_mode"
+            view_article "$selected" "false"
         fi
-        
-        [[ "$interactive_mode" != "true" ]] && break
-    done
+    fi
 }
 
 filter_by_tags() {
