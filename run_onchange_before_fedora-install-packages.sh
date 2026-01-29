@@ -20,20 +20,20 @@ reset="\e[0m"
 
 
 echo -e "\n\n\n${green}Installing system requirements...$reset"
-sudo dnf copr enable atim/lazygit -y
-sudo dnf install -y ripgrep \
+# sudo dnf copr enable atim/lazygit -y
+sudo pacman --noconfirm -S ripgrep \
                     helix \
                     bat \
                     lazygit \
                     task \
                     timew \
                     syncthing \
-                    adw-gtk3-theme \
                     nnn \
                     trash-cli \
-                    pipx \
-                    golang \
-                    nodejs-npm \
+                    python-pipx \
+                    go \
+                    nodejs \
+                    npm \
                     clang-tools-extra \
                     cargo \
                     gopass \
@@ -44,32 +44,34 @@ sudo dnf install -y ripgrep \
                     podman \
                     hugo \
                     wl-clipboard \
-                    toolbox \
-                    nodejs-bash-language-server
+                    bash-language-server \
+                    fzf \
+                    ttf-cascadia-code-nerd
+                    # networkmanager pipewire pipewire-audio pipewire-pulse pipewire-jack bluez bluez-utils
 
-echo -e "\n\n\n${green}Installing flatpaks...$reset"
-flatpak install -y app.drey.EarTag \
-                   app.drey.Warp \
-                   com.adrienplazas.Metronome \
-                   com.brave.Browser \
-                   com.github.finefindus.eyedropper \
-                   com.github.johnfactotum.Foliate \
-                   com.github.junrrein.PDFSlicer \
-                   com.github.marhkb.Pods \
-                   com.github.tchx84.Flatseal \
-                   com.mattjakeman.ExtensionManager \
-                   de.haeckerfelix.Fragments \
-                   dev.vencord.Vesktop \
-                   org.gimp.GIMP \
-                   org.gnome.Decibels \
-                   org.gnome.Music \
-                   org.gnome.seahorse.Application \
-                   org.gtk.Gtk3theme.adw-gtk3 \
-                   org.gtk.Gtk3theme.adw-gtk3-dark \
-                   org.kde.kdenlive \
-                   org.mozilla.Thunderbird \
-                   md.obsidian.Obsidian \
-                   org.gnome.Music
+# echo -e "\n\n\n${green}Installing flatpaks...$reset"
+# flatpak install -y app.drey.EarTag \
+#                    app.drey.Warp \
+#                    com.adrienplazas.Metronome \
+#                    com.brave.Browser \
+#                    com.github.finefindus.eyedropper \
+#                    com.github.johnfactotum.Foliate \
+#                    com.github.junrrein.PDFSlicer \
+#                    com.github.marhkb.Pods \
+#                    com.github.tchx84.Flatseal \
+#                    com.mattjakeman.ExtensionManager \
+#                    de.haeckerfelix.Fragments \
+#                    dev.vencord.Vesktop \
+#                    org.gimp.GIMP \
+#                    org.gnome.Decibels \
+#                    org.gnome.Music \
+#                    org.gnome.seahorse.Application \
+#                    org.gtk.Gtk3theme.adw-gtk3 \
+#                    org.gtk.Gtk3theme.adw-gtk3-dark \
+#                    org.kde.kdenlive \
+#                    org.mozilla.Thunderbird \
+#                    md.obsidian.Obsidian \
+#                    org.gnome.Music
 
 echo -e "\n\n\n${green}Installing go binaries...$reset"
 go install github.com/azr4e1/venv-notary/vn@latest

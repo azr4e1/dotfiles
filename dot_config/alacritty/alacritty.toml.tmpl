@@ -9,7 +9,7 @@ blinking = "Off"
 
 [font]
 builtin_box_drawing = true
-size = {{ .alacritty.fontsize | default 11 }}
+size = {{ if (and (index . "alacritty") (index .alacritty "fontsize")) }}{{.alacritty.fontsize}}{{else}}11{{end}}
 
 [font.normal]
 family = "Caskaydia Cove Nerd Font"
