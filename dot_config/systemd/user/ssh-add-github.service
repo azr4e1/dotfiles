@@ -1,0 +1,10 @@
+[Unit]
+   Description=Add GitHub SSH key
+   After=ssh-agent.service
+   
+   [Service]
+   Type=oneshot
+   ExecStart=/usr/bin/ssh-add /home/ld/.ssh/github
+   
+   [Install]
+   WantedBy=default.target
