@@ -19,7 +19,7 @@ export uline="\e[4m"
 export reset="\e[0m"
 
 # set vim as editor
-export EDITOR='hx'
+export EDITOR='helix'
 export VISUAL="$EDITOR"
 export BROWSER="firefox"
 export PAGER="bat --style='plain,rule'"

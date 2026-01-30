@@ -87,7 +87,8 @@ alias TODO="grep -n --exclude-dir='.git' -r TODO"
 
 alias np="notepy --vault '/home/ld/Desktop/Knowledge' --author 'Lorenzo Drumond' --autocommit"
 
-alias x="hx"
+alias x="helix"
+alias hx="helix"
 alias nv="nvim"
 alias v="nvim"
 

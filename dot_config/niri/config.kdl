@@ -18,7 +18,7 @@ input {
 
             // For example:
             layout "gb"
-            options "caps:esc,esc:swapcaps"
+            options "caps:escape"
             // options "grp:win_space_toggle,compose:ralt,ctrl:nocaps"
 
             // If this section is empty, niri will fetch xkb settings
