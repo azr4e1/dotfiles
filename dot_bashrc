@@ -51,13 +51,13 @@ export FZF_DEFAULT_OPTS="
 eval "$(fzf --bash)"
 
 # tmux
-if command -v tmux &>/dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-	# Create secondary session if it doesn't exist
-	tmux has-session -t secondary 2>/dev/null || tmux new-session -d -s secondary
+# if command -v tmux &>/dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+# 	# Create secondary session if it doesn't exist
+# 	tmux has-session -t secondary 2>/dev/null || tmux new-session -d -s secondary
 
-	if tmux has -t main; then
-		exec tmux attach-session -t main
-	else
-		exec tmux new-session -s main
-	fi
-fi
+# 	if tmux has -t main; then
+# 		exec tmux attach-session -t main
+# 	else
+# 		exec tmux new-session -s main
+# 	fi
+# fi
