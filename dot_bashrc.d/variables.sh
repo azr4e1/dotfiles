@@ -41,17 +41,6 @@ export GPG_TTY
 # Also, check out --reverse and --layout options if you prefer "top-down" layout instead of the default "bottom-up" layout.
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 
-# nnn options
-export NNN_OPTS="dcQU"
-# nnn plugins
-export NNN_PLUG='p:-!less -iR $nnn;e:-!sudo -e $nnn*;d:-!git diff;l:-!git log;o:-!nvr --remote $nnn'
-# nnn bookmarks
-export NNN_BMS="c:$HOME/.config;b:$HOME/.local/bin;s:$HOME/.scripts;d:$HOME/Desktop;p:$HOME/Desktop/Projects;"
-export NNN_LOCKER="cmatrix"
-export NNN_FIFO="/tmp/nnn.fifo"
-export NNN_COLORS='7777'
-export NNN_TRASH=1
-
 export XDG_DATA_HOME=$HOME/.local/share
 
 # for calibre appearnace
@@ -62,7 +51,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 # export PS1='[\u@\h \W$(git_branch)]\$ '
 
 # qt settings
-export QT_QPA_PLATFORMTHEME="gnome"
+export QT_QPA_PLATFORMTHEME="qt6ct"
 export QT_QPA_PLATFORM=wayland
 
 # nltk location
@@ -78,3 +67,4 @@ export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 export GOPATH="$HOME/.go"
 export AIRFLOW_HOME="$HOME/.local/share/airflow"
 export DOCKER_HOST="unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')"
+export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

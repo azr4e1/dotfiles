@@ -25,6 +25,7 @@ audio/x-speex=org.gnome.Decibels.desktop
 audio/x-vorbis=org.gnome.Decibels.desktop
 audio/x-wavpack=org.gnome.Decibels.desktop
 text/markdown=org.gnome.TextEditor.desktop
+application/pdf=org.pwmt.zathura.desktop
 
 [Added Associations]
 audio/mpeg=io.bassi.Amberol.desktop;org.gnome.Decibels.desktop;
