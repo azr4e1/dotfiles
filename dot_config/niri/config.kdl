@@ -640,7 +640,7 @@ binds {
     // Toggle tabbed column display mode.
     // Windows in this column will appear as vertical tabs,
     // rather than stacked on top of each other.
-    Mod+W { toggle-column-tabbed-display; }
+    Mod+T { toggle-column-tabbed-display; }
 
     // Actions to switch layouts.
     // Note: if you uncomment these, make sure you do NOT have
@@ -675,8 +675,8 @@ binds {
     // Personal
     Mod+P repeat=false { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
     Mod+E repeat=false {spawn-sh "lof org.mozilla.Thunderbird thunderbird"; }
-    Mod+O repeat=false {spawn-sh "lof firefox firefox"; }
-    Mod+Shift+O repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
+    Mod+W repeat=false {spawn-sh "lof firefox firefox"; }
+    Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
 }
 recent-windows {
     // off
