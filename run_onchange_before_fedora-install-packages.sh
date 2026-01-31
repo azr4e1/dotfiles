@@ -79,6 +79,7 @@ go install github.com/azr4e1/ggd/cmd/ggd@latest
 go install github.com/azr4e1/polacco@latest
 go install github.com/bitfield/gotestdox/cmd/gotestdox@latest
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
+go install github.com/azr4e1/niri-lof/cmd/lof@latest
 
 echo -e "\n\n\n${green}Installing lsp services...$reset"
 go install golang.org/x/tools/gopls@latest
