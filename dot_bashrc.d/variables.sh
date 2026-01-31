@@ -67,4 +67,3 @@ export NVIM_LISTEN_ADDRESS=/tmp/nvimsocket
 export GOPATH="$HOME/.go"
 export AIRFLOW_HOME="$HOME/.local/share/airflow"
 export DOCKER_HOST="unix://$(podman info --format '{{.Host.RemoteSocket.Path}}')"
-export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"

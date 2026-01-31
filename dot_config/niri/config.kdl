@@ -586,7 +586,7 @@ binds {
     // Mod+Ctrl+1 { move-window-to-workspace 1; }
 
     // Switches focus between the current and the previous workspace.
-    // Mod+Tab { focus-workspace-previous; }
+    Mod+Tab { focus-window-previous; }
 
     // The following binds move the focused window in and out of a column.
     // If the window is alone, they will consume it into the nearby column to the side.
@@ -669,6 +669,9 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+
+    // Personal
+    Mod+P repeat=false { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
 }
 
 debug {
