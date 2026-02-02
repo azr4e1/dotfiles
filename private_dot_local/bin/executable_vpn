@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+ACTIVESUFFIX=" (active)"
+
+get_connection_name() {
+  local name
+  name=$@
+  echo "${name%$ACTIVESUFFIX}"
+}
+
+deactivate_all_active_connections() {
+  active_connections=$(nmcli -t -f NAME,TYPE,ACTIVE connection show | grep -E "wireguard|openvpn" | cut -d ":" -f 1,3 | grep ":yes" | cut -d ":" -f 1)
+  if [[ -n "$active_connections" ]]; then
+    echo "$active_connections" | xargs -d "\n" -n1 nmcli connection down
+  else
+    return 0
+  fi
+}
+
+# list connections
+connections=$(nmcli -t -f NAME,TYPE,ACTIVE connection show | grep -E "wireguard|openvpn" | cut -d ":" -f 1,3 | sed -e 's/:yes/ \(active\)/g' -e 's/:no//g' | sort)
+
+# select connection
+selected=$(echo "$connections" | fuzzel --dmenu --placeholder "Select a VPN")
+
+# if not selected, exit
+if [ -z "$selected" ]; then
+  exit 0
+fi
+
+connection_name=$(get_connection_name "$selected")
+
+# check if connection is active
+if [[ "$selected" == *"$ACTIVESUFFIX" ]]; then
+  if nmcli connection down "$connection_name"; then
+    notify-send -u normal -a "VPN" "Disconnected" "\"$connection_name\" is now disconnected"
+  else
+    notify-send -u critical -a "VPN" "Error" "\"$connection_name\" failed to disconnect"
+  fi
+# otherwise, disconnect all other connections and connect selected
+else
+  if deactivate_all_active_connections && nmcli connection up "$connection_name"; then
+    notify-send -u normal -a "VPN" "Connected" "\"$connection_name\" is now connected"
+  else
+    notify-send -u critical -a "VPN" "Error" "**$connection_name** failed to connect"
+  fi
+fi

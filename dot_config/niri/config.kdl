@@ -677,6 +677,8 @@ binds {
     Mod+E repeat=false {spawn-sh "lof org.mozilla.Thunderbird thunderbird"; }
     Mod+W repeat=false {spawn-sh "lof firefox firefox"; }
     Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
+    Mod+O repeat=false {spawn-sh "vpn"; }
+    Mod+S repeat=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
 }
 recent-windows {
     // off
