@@ -679,6 +679,7 @@ binds {
     Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
     Mod+O repeat=false {spawn-sh "vpn"; }
     Mod+S repeat=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+    Mod+Shift+A repeat=false { spawn-sh "window-selection"; }
 }
 recent-windows {
     // off

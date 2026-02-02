@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Get window list from niri
+windows=$(niri msg -j windows) || exit 1
+
+# Extract titles and create fuzzel input with hidden IDs
+fuzzel_input=$(echo "$windows" | jq -r '.[] | "\(.app_id) (\(.title))"')
+
+# Show fuzzel and get selected index
+selected_index=$(echo "$fuzzel_input" | fuzzel --dmenu --index) || exit 0
+
+# Get the window ID from the selected index
+window_id=$(echo "$windows" | jq -r ".[$selected_index].id")
+
+# Focus the window
+niri msg action focus-window --id "$window_id"
