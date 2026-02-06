@@ -1,0 +1,27 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        ~/.msmtp.log
+
+# Gmail
+account        gmail
+host           smtp.gmail.com
+port           465
+tls_starttls   off
+from           drumondlorenzo@gmail.com
+user           drumondlorenzo@gmail.com
+password       {{ gopass `Gmail/mbsync` }}
+
+# A freemail service
+account        posteo
+host           posteo.de
+port           465
+tls_starttls   off
+from           drumondlorenzo@posteo.net
+user           drumondlorenzo@posteo.net
+password       {{ gopass `Email/drumondlorenzo@posteo.net` }}
+
+# Set a default account
+account default: gmail

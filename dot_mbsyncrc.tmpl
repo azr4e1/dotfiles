@@ -10,8 +10,9 @@ IMAPAccount gmail
 Host imap.gmail.com
 Port 993
 User drumondlorenzo@gmail.com
-Pass "{{ gopass `Email/drumondlorenzo@gmail.com` }}"
+Pass "{{ gopass `Gmail/mbsync` }}"
 SSLType IMAPS
+AuthMechs LOGIN
 
 # Stores
 IMAPStore posteo-remote
@@ -23,13 +24,13 @@ Account gmail
 # Local
 MaildirStore posteo-local
 Subfolders Verbatim
-Path ~/Documents/Mail/Posteo/
-Inbox ~/Documents/Mail/Posteo/INBOX
+Path ~/.local/share/mail/Posteo/
+Inbox ~/.local/share/mail/Posteo/INBOX
 
 MaildirStore gmail-local
 Subfolders Verbatim
-Path ~/Documents/Mail/GMAIL/
-Inbox ~/Documents/Mail/GMAIL/INBOX
+Path ~/.local/share/mail/GMAIL/
+Inbox ~/.local/share/mail/GMAIL/INBOX
 
 # Channels
 Channel posteo

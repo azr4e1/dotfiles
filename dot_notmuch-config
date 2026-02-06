@@ -10,7 +10,7 @@
 # configured here named ".notmuch".
 #
 [database]
-path=/home/ld/Documents/Mail
+path=/home/ld/.local/share/mail
 # User configuration
 #
 # Here is where you can let notmuch know how you would like to be
@@ -26,8 +26,8 @@ path=/home/ld/Documents/Mail
 # recipient list of replies, and will set the From address based on the
 # address to which the original email was addressed.
 #
-[user]
-other_email=ldrumond@mailbox.org
+# [user]
+# other_email=ldrumond@mailbox.org
 # Configuration for "notmuch new"
 #
 # The following options are supported here:
