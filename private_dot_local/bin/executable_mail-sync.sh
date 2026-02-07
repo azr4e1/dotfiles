@@ -12,6 +12,10 @@ fi
 # or specify account name as argument and define separate cron tasks for each acc
 notmuch search --format=text0 --output=files tag:deleted | xargs -0 --no-run-if-empty rm -v
 
-mbsync -a -q
+if [[ -n "$1" ]]; then
+    mbsync -q $1
+else
+    mbsync -a -q
+fi
 notmuch new
 

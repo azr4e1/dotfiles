@@ -1,0 +1,5 @@
+INBOX=tag:inbox
+Sent=tag:sent
+Trash=tag:trash
+Archive=tag:archive
+Drafts=tag:draft

@@ -4,7 +4,7 @@ Requires=mail-sync.service
 
 [Timer]
 Unit=mail-sync.service
-OnCalendar=*:0/2
+OnUnitActiveSec=5m
 
 [Install]
 WantedBy=timers.target
