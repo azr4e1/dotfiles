@@ -681,6 +681,8 @@ binds {
     Mod+O repeat=false {spawn-sh "vpn"; }
     Mod+S repeat=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
     Mod+Shift+A repeat=false { spawn-sh "window-selection"; }
+    Mod+N repeat=false {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
+    Mod+M repeat=false {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "calendar" "toggle"; }
 }
 recent-windows {
     // off
