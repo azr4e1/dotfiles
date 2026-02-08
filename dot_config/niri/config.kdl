@@ -504,7 +504,8 @@ binds {
     // ...
 
     // And you can also move a whole workspace to another monitor:
-    // Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+    Mod+Shift+Ctrl+U  { move-workspace-to-monitor-left; }
+    Mod+Shift+Ctrl+I  { move-workspace-to-monitor-right; }
     // ...
 
     Mod+U              { focus-workspace-down; }
