@@ -41,10 +41,48 @@ Create Both
 Expunge Both
 SyncState *
 
-Channel gmail
+Channel gmail-default
 Far :gmail-remote:
 Near :gmail-local:
-Patterns *
+Patterns * ![Gmail]* 
 Create Both
 Expunge Both
 SyncState *
+
+Channel gmail-sent
+Far :gmail-remote:"[Gmail]/Sent Mail"
+Near :gmail-local:Sent
+Create Near
+Sync Pull
+
+Channel gmail-trash
+Far :gmail-remote:"[Gmail]/Bin"
+Near :gmail-local:Trash
+Create Near
+Sync Pull
+
+Channel gmail-drafts
+Far :gmail-remote:"[Gmail]/Drafts"
+Near :gmail-local:Drafts
+Create Near
+Sync Pull
+
+Channel gmail-important
+Far :gmail-remote:"[Gmail]/Important"
+Near :gmail-local:Important
+Create Near
+Sync Pull
+
+Channel gmail-junk
+Far :gmail-remote:"[Gmail]/Spam"
+Near :gmail-local:Junk
+Create Near
+Sync Pull
+
+Group gmail
+Channel gmail-default
+Channel gmail-sent
+Channel gmail-trash
+Channel gmail-drafts
+Channel gmail-important
+Channel gmail-junk

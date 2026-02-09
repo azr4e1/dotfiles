@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Tag based on folder structure
-notmuch tag +sent   -- folder:Posteo/Sent or folder:GMAIL/Sent
-notmuch tag +trash  -- folder:Posteo/Trash or folder:GMAIL/Trash
-notmuch tag +archive -- folder:Posteo/Archive or folder:GMAIL/Archives or folder:Archive
-notmuch tag +draft  -- folder:Posteo/Drafts or folder:GMAIL/Drafts
+notmuch tag +sent -- folder:Posteo/Sent or folder:GMAIL/Sent
+notmuch tag +trash -- folder:Posteo/Trash or folder:GMAIL/Trash
+notmuch tag +archive -- folder:Posteo/Archive or folder:Posteo/Important or folder:GMAIL/Important or folder:Archive
+notmuch tag +draft -- folder:Posteo/Drafts or folder:GMAIL/Drafts
+notmuch tag +spam -- folder:Posteo/Junk or folder:GMAIL/Junk
 
 # Inbox tagging (remove from inbox when moved elsewhere)
-notmuch tag +inbox  -- folder:Posteo/INBOX or folder:GMAIL/INBOX
-notmuch tag -inbox  -- not folder:Posteo/INBOX and not folder:GMAIL/INBOX
+notmuch tag +inbox -- folder:Posteo/INBOX or folder:GMAIL/INBOX
+notmuch tag -inbox -- not folder:Posteo/INBOX and not folder:GMAIL/INBOX
