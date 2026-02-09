@@ -17,5 +17,15 @@ if [[ -n "$1" ]]; then
 else
     mbsync -a -q
 fi
-notmuch new
 
+# Index new mail and capture count
+NEW_COUNT=$(notmuch new 2>&1 | grep -oP 'Added \K\d+' | head -1)
+
+# Notify if new mail
+if [[ -n "$NEW_COUNT" ]] && [[ "$NEW_COUNT" -gt 0 ]]; then
+    message="message"
+    if [[ "$NEW_COUNT" -gt 1 ]]; then
+        message="messages"
+    fi
+    notify-send -u normal -a "Mail" "New Mail" "$NEW_COUNT new $message"  # -i "mail-unread"
+fi
