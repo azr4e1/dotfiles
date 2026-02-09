@@ -408,7 +408,7 @@ binds {
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
-    Mod+Shift+Return repeat=false {spawn-sh "lof Alacritty alacritty"; }
+    Mod+Shift+Return repeat=false hotkey-overlay-title="Launch or focus Alacritty" {spawn-sh "lof Alacritty alacritty"; }
 
     Mod+Space hotkey-overlay-title="Run an Application" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
     Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
@@ -674,16 +674,16 @@ binds {
     Mod+Shift+P { power-off-monitors; }
 
     // Personal
-    Mod+P repeat=false { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
-    Mod+E repeat=false {spawn-sh "lof org.mozilla.Thunderbird thunderbird"; }
-    Mod+W repeat=false {spawn-sh "lof firefox firefox"; }
-    Mod+Shift+W repeat=false {spawn "firefox"; }
+    Mod+P repeat=false hotkey-overlay-title="Select a password" { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
+    Mod+E repeat=false hotkey-overlay-title="Launch or focus Thunderbird" {spawn-sh "lof org.mozilla.Thunderbird thunderbird"; }
+    Mod+W repeat=false hotkey-overlay-title="Launch or focus Firefox" {spawn-sh "lof firefox firefox"; }
+    Mod+Shift+W repeat=false hotkey-overlay-title="Launch Firefox" {spawn "firefox"; }
     // Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
-    Mod+O repeat=false {spawn-sh "vpn"; }
-    Mod+S repeat=false { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
-    Mod+Shift+A repeat=false { spawn-sh "window-selection"; }
-    Mod+N repeat=false {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
-    Mod+M repeat=false {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "calendar" "toggle"; }
+    Mod+O repeat=false hotkey-overlay-title="Select VPN" {spawn-sh "vpn"; }
+    Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+    Mod+Shift+A repeat=false hotkey-overlay-title="Select an open window" { spawn-sh "window-selection"; }
+    Mod+N repeat=false hotkey-overlay-title="Toggle Noctalia notifications" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
+    Mod+M repeat=false hotkey-overlay-title="Toggle Noctalia calendar" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "calendar" "toggle"; }
 }
 recent-windows {
     // off
