@@ -4,7 +4,7 @@ Requires=mail-sync.service
 
 [Timer]
 Unit=mail-sync.service
-OnUnitActiveSec=5m
+OnUnitActiveSec=2m
 
 [Install]
 WantedBy=timers.target
