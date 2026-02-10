@@ -1,6 +1,6 @@
 INBOX=tag:inbox
 Sent=tag:sent
-All Trash=tag:trash
-Archives=tag:archive
+Bin=tag:trash
+Important=tag:archive
 Drafts=tag:draft
 Spam=tag:spam
