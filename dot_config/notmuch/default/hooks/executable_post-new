@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Tag based on folder structure (remove conflicting tags first)
-notmuch tag +sent -trash -draft -archive -- folder:Posteo/Sent or folder:GMAIL/Sent
-notmuch tag +trash -sent -draft -archive -- folder:Posteo/Trash or folder:GMAIL/Trash or folder:Trash
-notmuch tag +archive -sent -trash -draft -- folder:Posteo/Important or folder:GMAIL/Important or folder:Archive
-notmuch tag +draft -sent -trash -archive -- folder:Posteo/Drafts or folder:GMAIL/Drafts
-notmuch tag +spam -sent -trash -draft -archive -- folder:Posteo/Junk or folder:GMAIL/Junk
+notmuch tag +sent -trash -draft -archive -spam -- folder:Posteo/Sent or folder:GMAIL/Sent
+notmuch tag +trash -sent -draft -archive -spam -- folder:Posteo/Trash or folder:GMAIL/Trash or folder:Trash
+notmuch tag +archive -sent -trash -draft -spam -- folder:Posteo/Important or folder:GMAIL/Important or folder:Archive
+notmuch tag +draft -sent -trash -archive -spam -- folder:Posteo/Drafts or folder:GMAIL/Drafts
+notmuch tag +spam -sent -trash -draft -archive -- folder:Posteo/Junk or folder:GMAIL/Junk or folder:Junk
 
 # Inbox tagging
-notmuch tag +inbox -- folder:Posteo/INBOX or folder:GMAIL/INBOX
+notmuch tag +inbox -sent -trash -draft -archive -spam -- folder:Posteo/INBOX or folder:GMAIL/INBOX
 notmuch tag -inbox -- not folder:Posteo/INBOX and not folder:GMAIL/INBOX
