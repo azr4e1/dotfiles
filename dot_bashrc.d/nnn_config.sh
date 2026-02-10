@@ -11,7 +11,9 @@ export NNN_COLORS='7777'
 export NNN_TRASH=1
 export NNN_TERMINAL="alacritty"
 export NNN_OPENER="$HOME/.config/nnn/plugins/nuke"
+export NNN_PAGER="$PAGER"
 export NNN_ICONLOOKUP=1
+export NNN_PREVIEWIMGPROG="catimg"
 export GUI=1
 export BIN=1
 
