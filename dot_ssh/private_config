@@ -4,3 +4,11 @@ Host github
   User git
   IdentityFile ~/.ssh/github
   AddKeysToAgent yes
+
+Host homelab
+    HostName 192.168.197.5
+    User root
+    Port 22
+    Compression no
+    # Ciphers chacha20-poly1305@openssh.com
+    # ProxyJump jumphost
