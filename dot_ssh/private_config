@@ -12,3 +12,7 @@ Host homelab
     Compression no
     # Ciphers chacha20-poly1305@openssh.com
     # ProxyJump jumphost
+
+Host aur.archlinux.org
+  IdentityFile ~/.ssh/aur
+  User aur

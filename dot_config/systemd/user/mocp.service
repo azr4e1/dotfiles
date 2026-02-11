@@ -1,0 +1,13 @@
+[Unit]
+Description=MOC server
+After=pipewire-pulse.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mocp -S -F
+ExecStop=/usr/bin/mocp -x
+Restart=on-failure
+Environment="PULSE_SERVER=unix:/run/user/%U/pulse/native"
+
+[Install]
+WantedBy=default.target

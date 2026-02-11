@@ -4,7 +4,7 @@
    
    [Service]
    Type=oneshot
-   ExecStart=/usr/bin/ssh-add /home/ld/.ssh/github
+   ExecStart=/usr/bin/ssh-add /home/ld/.ssh/github /home/ld/.ssh/aur
    
    [Install]
    WantedBy=default.target

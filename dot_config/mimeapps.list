@@ -26,6 +26,15 @@ audio/x-vorbis=org.gnome.Decibels.desktop
 audio/x-wavpack=org.gnome.Decibels.desktop
 text/markdown=org.gnome.TextEditor.desktop
 application/pdf=org.pwmt.zathura.desktop
+x-scheme-handler/mailto=userapp-Thunderbird-ZNGKJ3.desktop
+message/rfc822=userapp-Thunderbird-ZNGKJ3.desktop
+x-scheme-handler/mid=userapp-Thunderbird-ZNGKJ3.desktop
+x-scheme-handler/webcal=userapp-Thunderbird-C70YJ3.desktop
+text/calendar=userapp-Thunderbird-C70YJ3.desktop
+application/x-extension-ics=userapp-Thunderbird-C70YJ3.desktop
+x-scheme-handler/webcals=userapp-Thunderbird-C70YJ3.desktop
+image/*=imv.desktop
+image/jpeg=imv.desktop
 
 [Added Associations]
 audio/mpeg=io.bassi.Amberol.desktop;org.gnome.Decibels.desktop;
@@ -53,3 +62,7 @@ audio/x-speex=org.gnome.Decibels.desktop;
 audio/x-vorbis=org.gnome.Decibels.desktop;
 audio/x-wavpack=org.gnome.Decibels.desktop;
 text/markdown=org.gnome.TextEditor.desktop;
+x-scheme-handler/mailto=userapp-Thunderbird-ZNGKJ3.desktop;
+x-scheme-handler/mid=userapp-Thunderbird-ZNGKJ3.desktop;
+x-scheme-handler/webcal=userapp-Thunderbird-C70YJ3.desktop;
+x-scheme-handler/webcals=userapp-Thunderbird-C70YJ3.desktop;

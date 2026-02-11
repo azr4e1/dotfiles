@@ -1,4 +1,4 @@
-INBOX=tag:inbox
+Inbox=tag:inbox
 Sent=tag:sent
 Bin=tag:trash
 Important=tag:archive
