@@ -1,2 +1,3 @@
 SoundDriver = ALSA:JACK:OSS
 Theme = tokyonight
+Keymap = keymap

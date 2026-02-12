@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+# Get current track info
+out="$(mocp -i)"
+FILE="$(echo "$out" | grep 'File:' | cut -d':' -f2- | sed 's/^[[:blank:]]*//')"
+ARTIST="$(echo "$out" | grep 'Artist:' | cut -d':' -f2 | sed 's/^[[:blank:]]*//;s/[[:blank:]]*$//')"
+TITLE="$(echo "$out" | grep 'SongTitle:' | cut -d':' -f2 | sed 's/^[[:blank:]]*//;s/[[:blank:]]*$//')"
+
+LYRICS_FILE="${FILE%.*}"
+
+if [ -z "$ARTIST" ] || [ -z "$TITLE" ]; then
+    exit 1
+fi
+
+# AZLyrics URL format: https://www.azlyrics.com/lyrics/artist/songtitle.html
+# Remove special characters and spaces, convert to lowercase
+clean_artist=$(echo "$ARTIST" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]//g')
+clean_title=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]//g')
+
+url="https://www.azlyrics.com/lyrics/${clean_artist}/${clean_title}.html"
+
+# Fetch and extract lyrics
+# AZLyrics has lyrics in a div after a comment containing "Usage of azlyrics.com content"
+curl -s -A "Mozilla/5.0" "$url" | \
+    sed -n '/<!-- Usage of azlyrics.com content/,/<\/div>/p' | \
+    sed '1d;$d' | \
+    sed 's/<[^>]*>//g' | \
+    sed '/^$/N;/^\n$/D' > "$LYRICS_FILE"
+
+# Check if we got any content
+if [ ! -s "$LYRICS_FILE" ]; then
+    echo "Lyrics not found for: $ARTIST - $TITLE" > "$LYRICS_FILE"
+fi

@@ -1,0 +1,127 @@
+# Unset keybdings
+menu_down             =
+menu_up               =
+menu_page_down        =
+menu_page_up          =
+menu_first_item       =
+menu_last_item        =
+plist_add_stream      =
+
+seek_forward          =
+seek_backward         =
+seek_forward_fast     =
+seek_backward_fast    =
+
+pause                 =
+stop                  =
+next                  =
+previous              =
+
+add_file              =
+add_directory         =
+delete_from_playlist  =
+clear_playlist        =
+plist_move_down       =
+plist_move_up         =
+
+# Directory navigation
+go                    =
+go_to_music_directory =
+go_to_a_directory     =
+go_up                 =
+go_to_playing_file    =
+
+# Search
+search_menu           =
+next_search           =
+
+# Interface toggles
+toggle_layout         =
+toggle_menu           =
+toggle_hidden_files   =
+toggle_show_time      =
+refresh               =
+
+# Volume (vim-style)
+volume_up_5           =
+volume_down_5         =
+volume_up_1           =
+volume_down_1         =
+
+# Queue
+enqueue_file          =
+clear_queue           =
+
+# Quit
+quit_client           =
+quit                  =
+
+# Keep useful defaults
+help                  =
+save_playlist         =
+show_lyrics           =
+theme_menu            =
+
+
+# Set vim bindings
+menu_down             = j
+menu_up               = k
+menu_page_down        = ^d
+menu_page_up          = ^u
+menu_first_item       = g
+menu_last_item        = G
+
+seek_forward          = l
+seek_backward         = h
+seek_forward_fast     = L
+seek_backward_fast    = H
+
+pause                 = SPACE
+stop                  = s
+next                  = n
+previous              = N
+
+# Directory navigation
+go                    = ENTER
+go_to_music_directory = M
+go_to_a_directory     = o
+go_up                 = u
+go_to_playing_file    = P
+
+add_file              = a
+add_directory         = A
+delete_from_playlist  = d
+clear_playlist        = c
+plist_move_down       = J
+plist_move_up         = K
+
+# Search
+search_menu           = /
+next_search           = n
+
+# Interface toggles
+toggle_layout         = m
+toggle_menu           = TAB
+toggle_hidden_files   = .
+toggle_show_time      = t
+refresh               = ^r
+
+# Volume (vim-style)
+volume_up_5           = +
+volume_down_5         = -
+volume_up_1           = >
+volume_down_1         = <
+
+# Queue
+enqueue_file          = z
+clear_queue           = Z
+
+# Quit
+quit_client           = q
+quit                  = Q
+
+# Keep useful defaults
+help                  = ?
+save_playlist         = w
+show_lyrics           = ^l
+theme_menu            = T

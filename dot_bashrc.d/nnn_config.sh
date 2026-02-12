@@ -1,7 +1,7 @@
 # nnn options
 export NNN_OPTS="dcQUi"
 # nnn plugins
-export NNN_PLUG='p:preview-tui;e:-!sudo -e $nnn*;l:-!git log;j:autojump;m:mocq'
+export NNN_PLUG='p:preview-tui;e:-!sudo -e $nnn*;g:-!git log;j:autojump;m:mocq;l:moc-lyrics;f:finder'
 # nnn bookmarks
 export NNN_BMS="c:$HOME/.config;b:$HOME/.local/bin;s:$HOME/.scripts;d:$HOME/Desktop;p:$HOME/Desktop/Projects;"
 export NNN_LOCKER="btop"
