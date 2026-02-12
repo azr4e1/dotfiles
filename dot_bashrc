@@ -21,8 +21,9 @@ fi
 unset rc
 
 # User specific environment
-if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:" ]]; then
-	PATH="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:$PATH"
+path_string="$HOME/.local/bin:$HOME/.local/share/lsp:$HOME/bin:$HOME/.npm/bin:$HOME/.cargo/bin:$HOME/.local/share/nvim/mason/bin:$HOME/.google-cloud-sdk/bin:$GOPATH/bin:/usr/local/go/bin:$HOME/.config/nnn/plugins"
+if ! [[ "$PATH" =~ "$path_string" ]]; then
+	PATH="$path_string:$PATH"
 fi
 export PATH
 

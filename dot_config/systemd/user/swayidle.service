@@ -6,6 +6,7 @@ After=graphical-session.target
 [Service]
 Type=simple
 ExecStart=/usr/sbin/swayidle -w \
+timeout 540 'notify-send -u critical -a "SwayIdle" "Locking soon" "Screen will lock in 1 minute"' \
 timeout 600 'qs -c noctalia-shell ipc call lockScreen lock' \
 timeout 630 'niri msg action power-off-monitors' \
 timeout 1200 'qs -c noctalia-shell ipc call sessionMenu lockAndSuspend'
@@ -13,6 +14,7 @@ timeout 1200 'qs -c noctalia-shell ipc call sessionMenu lockAndSuspend'
 Restart=on-failure
 # Give the agent time to register with the D-Bus session
 TimeoutSec=30
+Environment="DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
 
 [Install]
 WantedBy=graphical-session.target
