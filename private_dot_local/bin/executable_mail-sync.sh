@@ -10,7 +10,6 @@ fi
 
 #run mbsync once for all accs with named configs file, with quiet interface
 # or specify account name as argument and define separate cron tasks for each acc
-notmuch search --format=text0 --output=files tag:deleted | xargs -0 --no-run-if-empty rm -v
 
 if [[ -n "$1" ]]; then
     mbsync -q $1
