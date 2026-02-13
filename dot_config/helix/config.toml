@@ -40,3 +40,9 @@ ret = ['extend_to_line_bounds', ':pipe-to gorepl send', 'move_visual_line_down']
 
 [keys.select.'space']
 ret = ':pipe-to gorepl send'
+
+[keys.normal.'\']
+f = ':pipe table-formatter'
+
+[keys.select.'\']
+f = ':pipe table-formatter'
