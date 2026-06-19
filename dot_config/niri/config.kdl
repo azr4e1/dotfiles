@@ -306,7 +306,7 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // spawn-at-startup "waybar"
-// spawn-at-startup "qs" "-c" "noctalia-shell"
+spawn-at-startup "qs" "-c" "noctalia-shell"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -676,8 +676,8 @@ binds {
     // Personal
     Mod+P repeat=false hotkey-overlay-title="Select a password" { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
     Mod+E repeat=false hotkey-overlay-title="Launch or focus Thunderbird" {spawn-sh "lof org.mozilla.Thunderbird thunderbird"; }
-    Mod+W repeat=false hotkey-overlay-title="Launch or focus Firefox" {spawn-sh "lof firefox firefox"; }
-    Mod+Shift+W repeat=false hotkey-overlay-title="Launch Firefox" {spawn "firefox"; }
+    Mod+W repeat=false hotkey-overlay-title="Launch or focus browser" {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
+    Mod+Shift+W repeat=false hotkey-overlay-title="Launch browser" {spawn "vivaldi-stable"; }
     // Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
     Mod+O repeat=false hotkey-overlay-title="Select VPN" {spawn-sh "vpn"; }
     Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
