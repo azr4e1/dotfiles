@@ -23,7 +23,7 @@ while sleep 60; do
         notify-send -u critical -a battery "Battery critical" "${cap}% remaining"
         warned_crit=1
     elif [ "$cap" -le "$LOW" ] && [ "$warned_low" -eq 0 ]; then
-        notify-send -a battery "Battery low" "${cap}% remaining"
+        notify-send -u critical -a battery "Battery low" "${cap}% remaining"
         warned_low=1
     fi
 done
