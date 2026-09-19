@@ -26,3 +26,7 @@ default-timeout=8000
 
 [app-name=battery urgency=high]
 default-timeout=0
+
+[app-name=osd]
+anchor=bottom-center
+width=260

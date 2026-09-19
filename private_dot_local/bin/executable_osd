@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# Usage: osd volume-up|volume-down|volume-mute|mic-mute|brightness-up|brightness-down
+
+show() {  # id, title, percent
+    notify-send -a osd -t 1500 \
+        -h string:x-canonical-private-synchronous:"$1" \
+        -h int:value:"$3" "$2"
+}
+
+volume() {
+    out=$(wpctl get-volume @DEFAULT_AUDIO_SINK@)
+    vol=$(awk '{printf "%d", $2 * 100}' <<<"$out")
+    if grep -q MUTED <<<"$out"; then
+        show volume "Volume muted" "$vol"
+    else
+        show volume "Volume ${vol}%" "$vol"
+    fi
+}
+
+brightness() {
+    pct=$(brightnessctl --class=backlight -m | cut -d, -f4 | tr -d %)
+    show brightness "Brightness ${pct}%" "$pct"
+}
+
+case "$1" in
+    volume-up)       wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05+ -l 1.0; volume ;;
+    volume-down)     wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.05-; volume ;;
+    volume-mute)     wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; volume ;;
+    mic-mute)
+        wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
+        if wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED; then
+            show mic "Microphone muted" 0
+        else
+            show mic "Microphone on" 100
+        fi
+        ;;
+    brightness-up)   brightnessctl --class=backlight set +5% >/dev/null; brightness ;;
+    brightness-down) brightnessctl --class=backlight set 5%- >/dev/null; brightness ;;
+    *) echo "unknown action: $1" >&2; exit 1 ;;
+esac
