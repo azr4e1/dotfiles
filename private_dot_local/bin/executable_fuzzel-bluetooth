@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Bluetooth menu for fuzzel. Requires: bluez (bluetoothctl), fuzzel, libnotify (optional).
+# Selecting a connected device disconnects it; anything else is (paired,) trusted and connected.
+
+menu() { fuzzel --dmenu --width 55 --lines 12 "$@"; }
+notify() { notify-send -a bluetooth "$@" 2>/dev/null; }
+
+MAC_RE='([0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}'
+
+if ! bluetoothctl show | grep -q 'Powered: yes'; then
+    choice=$(printf 'Power on Bluetooth\n' | menu -p 'Bluetooth is off > ') || exit 0
+    [ -n "$choice" ] || exit 0
+    bluetoothctl power on >/dev/null
+    sleep 1
+fi
+
+build_list() {
+    printf 'Scan for new devices (5s)\n'
+    printf 'Power off Bluetooth\n'
+    bluetoothctl devices | while read -r _ mac name; do
+        info=$(bluetoothctl info "$mac")
+        if grep -q 'Connected: yes' <<<"$info"; then state="connected"
+        elif grep -q 'Paired: yes' <<<"$info"; then state="paired"
+        else state="new"
+        fi
+        printf '[%s] %s  (%s)\n' "$state" "$name" "$mac"
+    done
+}
+
+choice=$(build_list | menu -p 'Bluetooth > ') || exit 0
+[ -n "$choice" ] || exit 0
+
+case "$choice" in
+    "Scan for new devices"*)
+        notify "Bluetooth" "Scanning for 5 seconds..."
+        bluetoothctl --timeout 5 scan on >/dev/null 2>&1
+        exec "$0"
+        ;;
+    "Power off Bluetooth")
+        bluetoothctl power off >/dev/null
+        notify "Bluetooth" "Powered off"
+        exit 0
+        ;;
+esac
+
+mac=$(grep -oE "$MAC_RE" <<<"$choice" | tail -n1)
+[ -n "$mac" ] || exit 1
+name=$(bluetoothctl info "$mac" | sed -n 's/^\s*Name: //p')
+name=${name:-$mac}
+
+if [[ "$choice" == "[connected]"* ]]; then
+    if bluetoothctl disconnect "$mac" >/dev/null 2>&1; then
+        notify "Bluetooth" "Disconnected from $name"
+    else
+        notify -u critical "Bluetooth" "Failed to disconnect from $name"
+    fi
+    exit 0
+fi
+
+if [[ "$choice" == "[new]"* ]]; then
+    notify "Bluetooth" "Pairing with $name..."
+    if ! bluetoothctl --timeout 20 pair "$mac" >/dev/null 2>&1; then
+        notify -u critical "Bluetooth" "Pairing with $name failed"
+        exit 1
+    fi
+    bluetoothctl trust "$mac" >/dev/null 2>&1
+fi
+
+if bluetoothctl --timeout 15 connect "$mac" 2>&1 | grep -q 'Connection successful'; then
+    notify "Bluetooth" "Connected to $name"
+else
+    notify -u critical "Bluetooth" "Failed to connect to $name"
+    exit 1
+fi

@@ -306,7 +306,10 @@ layout {
 
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // spawn-at-startup "waybar"
-spawn-at-startup "qs" "-c" "noctalia-shell"
+// spawn-at-startup "noctalia"
+spawn-at-startup "mako"
+spawn-at-startup "swaybg" "-i" "/home/ld/Pictures/Images/Wallpapers/Cyberpunk/hhue62x2cehy.jpg" "-m" "fill"
+spawn-at-startup "sh" "-c" "$HOME/.local/bin/battery-watch"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -424,8 +427,9 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     Mod+Shift+Return repeat=false hotkey-overlay-title="Launch or focus Alacritty" {spawn-sh "lof Alacritty alacritty"; }
 
-    Mod+Space hotkey-overlay-title="Run an Application" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-    Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+    Mod+Space hotkey-overlay-title="Run an Application" { spawn "fuzzel" "--placeholder" "Run an Application"; }
+    Mod+Delete { spawn "swaylock" "-f" "-c" "000000"; }
+    // Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument. It's passed verbatim to `sh -c`.
@@ -694,10 +698,14 @@ binds {
     Mod+Shift+W repeat=false hotkey-overlay-title="Launch browser" {spawn "firefox"; }
     // Mod+Shift+W repeat=false {spawn-sh "lof vivaldi-stable vivaldi-stable"; }
     Mod+O repeat=false hotkey-overlay-title="Select VPN" {spawn-sh "vpn"; }
-    Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+    Mod+B repeat=false hotkey-overlay-title="Select bluetooth" {spawn-sh "fuzzel-bluetooth"; }
+    Mod+N repeat=false hotkey-overlay-title="Select WiFi" {spawn-sh "fuzzel-wifi"; }
+    Mod+M repeat=false hotkey-overlay-title="Show time" { spawn-sh "show-time"; }
+
+    // Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
     Mod+Shift+A repeat=false hotkey-overlay-title="Select an open window" { spawn-sh "window-selection"; }
-    Mod+N repeat=false hotkey-overlay-title="Toggle Noctalia notifications" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
-    Mod+M repeat=false hotkey-overlay-title="Toggle Noctalia calendar" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "calendar" "toggle"; }
+    // Mod+N repeat=false hotkey-overlay-title="Toggle Noctalia notifications" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
+    // Mod+M repeat=false hotkey-overlay-title="Toggle Noctalia calendar" {spawn "qs" "-c" "noctalia-shell" "ipc" "call" "calendar" "toggle"; }
 }
 recent-windows {
     // off
@@ -735,8 +743,8 @@ debug {
   honor-xdg-activation-with-invalid-serial
 }
 
-// Set the overview wallpaper on the backdrop.
-layer-rule {
-  match namespace="^noctalia-overview*"
-  place-within-backdrop true
-}
+// // Set the overview wallpaper on the backdrop.
+// layer-rule {
+//   match namespace="^noctalia-overview*"
+//   place-within-backdrop true
+// }

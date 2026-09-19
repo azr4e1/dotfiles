@@ -1,0 +1,28 @@
+# Layout, matching niri's gaps and corner radius
+anchor=top-right
+margin=10
+padding=12
+width=360
+border-size=2
+border-radius=10
+
+# Colours, matching the focus ring and dark theme
+background-color=#14141aee
+text-color=#e6e6e6
+border-color=#7fc8ff
+progress-color=over #7fc8ff55
+
+# Timeout in ms
+default-timeout=5000
+ignore-timeout=0
+
+[urgency=low]
+border-color=#505050
+default-timeout=3000
+
+[urgency=high]
+border-color=#9b0000
+default-timeout=8000
+
+[app-name=battery urgency=high]
+default-timeout=0

@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Notifies at low and critical battery levels while discharging.
+LOW=20
+CRIT=10
+warned_low=0
+warned_crit=0
+
+while sleep 60; do
+    for bat in /sys/class/power_supply/BAT*; do
+        [ -r "$bat/capacity" ] || continue
+        cap=$(<"$bat/capacity")
+        status=$(<"$bat/status")
+        break
+    done
+    [ -n "${cap:-}" ] || continue
+
+    if [ "$status" != "Discharging" ]; then
+        warned_low=0; warned_crit=0
+        continue
+    fi
+
+    if [ "$cap" -le "$CRIT" ] && [ "$warned_crit" -eq 0 ]; then
+        notify-send -u critical -a battery "Battery critical" "${cap}% remaining"
+        warned_crit=1
+    elif [ "$cap" -le "$LOW" ] && [ "$warned_low" -eq 0 ]; then
+        notify-send -a battery "Battery low" "${cap}% remaining"
+        warned_low=1
+    fi
+done
