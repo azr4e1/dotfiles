@@ -12,20 +12,27 @@ if [ "$(nmcli radio wifi)" != "enabled" ]; then
     sleep 2
 fi
 
+# SSID of the network currently in use. Taken from the unfiltered list, so it
+# is correct even when several access points share the same SSID.
+active_ssid=$(nmcli -t -e no -f ACTIVE,SSID device wifi list --rescan no \
+    | sed -n 's/^yes://p' | head -n1)
+
 build_list() {
     printf 'Rescan\n'
     printf 'Disable Wi-Fi\n'
     # SSID is the last field so colons inside it survive (-e no disables escaping).
-    nmcli -t -e no -f IN-USE,SIGNAL,SECURITY,SSID device wifi list --rescan no \
-        | while IFS=: read -r inuse signal sec ssid; do
+    nmcli -t -e no -f SIGNAL,SECURITY,SSID device wifi list --rescan no \
+        | while IFS=: read -r signal sec ssid; do
             [ -n "$ssid" ] || continue
             [ -n "$sec" ] || sec="open"
-            sec=${sec// //}
-            mark="  "; [ "$inuse" = "*" ] && mark="* "
-            printf '%s%03d%% %-10s %s\n' "$mark" "$signal" "$sec" "$ssid"
+            printf '%03d\t%s\t%s\n' "$signal" "${sec// /_}" "$ssid"
         done \
-        | sort -t' ' -k1.3,1.5 -rn -s \
-        | awk '{ ssid=$0; sub(/^.{2}[0-9]+% +[^ ]+ +/, "", ssid); if (!seen[ssid]++) print }'
+        | sort -t$'\t' -k1,1nr \
+        | awk -F'\t' -v active="$active_ssid" '
+            !seen[$3]++ {
+                mark = ($3 == active) ? "* " : "  "
+                printf "%s%3d%% %-10s %s\n", mark, $1, $2, $3
+            }'
 }
 
 choice=$(build_list | menu -p 'Wi-Fi > ') || exit 0
@@ -45,12 +52,12 @@ case "$choice" in
         ;;
 esac
 
-active=0; [[ "$choice" == "* "* ]] && active=1
-ssid=$(sed -E 's/^.{2}[0-9]+% +[^ ]+ +//' <<<"$choice")
-sec=$(sed -E 's/^.{2}[0-9]+% +([^ ]+) .*/\1/' <<<"$choice")
+ssid=$(sed -E 's/^.{2} *[0-9]+% +[^ ]+ +//' <<<"$choice")
+sec=$(sed -E 's/^.{2} *[0-9]+% +([^ ]+) .*/\1/' <<<"$choice")
 
-if [ "$active" -eq 1 ]; then
-    if nmcli connection down id "$ssid" >/dev/null 2>&1; then
+if [ -n "$active_ssid" ] && [ "$ssid" = "$active_ssid" ]; then
+    dev=$(nmcli -t -f DEVICE,TYPE device | awk -F: '$2=="wifi" {print $1; exit}')
+    if nmcli device disconnect "$dev" >/dev/null 2>&1; then
         notify "Wi-Fi" "Disconnected from $ssid"
     else
         notify -u critical "Wi-Fi" "Failed to disconnect from $ssid"
