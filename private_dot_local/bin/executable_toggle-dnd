@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+if makoctl mode | grep -qx do-not-disturb; then
+    makoctl mode -r do-not-disturb
+    notify-send -a dnd -t 2000 -h string:x-canonical-private-synchronous:dnd "Do not disturb off"
+else
+    notify-send -a dnd -t 2000 -h string:x-canonical-private-synchronous:dnd "Do not disturb on"
+    sleep 2
+    makoctl mode -a do-not-disturb
+fi

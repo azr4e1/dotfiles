@@ -310,6 +310,7 @@ layout {
 spawn-at-startup "mako"
 spawn-at-startup "swaybg" "-i" "/home/ld/Pictures/Images/Wallpapers/Cyberpunk/hhue62x2cehy.jpg" "-m" "fill"
 spawn-at-startup "sh" "-c" "$HOME/.local/bin/battery-watch"
+spawn-at-startup "wlsunset" "-l" "51.5" "-L" "-0.12" "-t" "3500" "-T" "6500" "-d" "1800"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
@@ -707,6 +708,7 @@ binds {
     Mod+B repeat=false hotkey-overlay-title="Select bluetooth" {spawn-sh "fuzzel-bluetooth"; }
     Mod+N repeat=false hotkey-overlay-title="Select WiFi" {spawn-sh "fuzzel-wifi"; }
     Mod+M repeat=false hotkey-overlay-title="Show time" { spawn-sh "show-time"; }
+    Mod+D repeat=false hotkey-overlay-title="Toggle do not disturb" { spawn-sh "toggle-dnd"; }
 
     // Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
     Mod+Shift+A repeat=false hotkey-overlay-title="Select an open window" { spawn-sh "window-selection"; }

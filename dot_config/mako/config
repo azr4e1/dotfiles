@@ -16,6 +16,8 @@ progress-color=over #7fc8ff55
 default-timeout=5000
 ignore-timeout=0
 
+layer=overlay
+
 [urgency=low]
 border-color=#505050
 default-timeout=3000
@@ -31,7 +33,3 @@ default-timeout=0
 anchor=bottom-center
 width=260
 history=0
-layer=overlay
-
-[app-name=clock]
-layer=overlay
