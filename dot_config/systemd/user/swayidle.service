@@ -6,7 +6,7 @@ After=graphical-session.target
 [Service]
 Type=simple
 ExecStart=/usr/sbin/swayidle -w \
-timeout 840 'notify-send -u critical -a "SwayIdle" "Locking soon" "Screen will lock in 1 minute"' \
+timeout 600 'notify-send -u critical -a "SwayIdle" "Locking soon" "Screen will lock in 5 minute"' \
 timeout 900 'qs -c noctalia-shell ipc call lockScreen lock' \
 timeout 930 'niri msg action power-off-monitors' \
 timeout 1800 'qs -c noctalia-shell ipc call sessionMenu lockAndSuspend'
