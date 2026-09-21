@@ -196,7 +196,7 @@ layout {
         // off
 
         // How many logical pixels the ring extends out from the windows.
-        width 4
+        width 2
 
         // Colors can be set in a variety of ways:
         // - CSS named colors: "red"
@@ -226,6 +226,15 @@ layout {
         // To do that, set relative-to="workspace-view".
         //
         // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+    }
+
+    tab-indicator {
+        position "top"
+        width 4
+        gap 3
+        active-color "#2d4f67"
+        inactive-color "#727169"
+        urgent-color "#e82424"
     }
 
     // You can also add a border. It's similar to the focus ring, but always visible.
