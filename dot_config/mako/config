@@ -6,11 +6,11 @@ width=360
 border-size=2
 border-radius=10
 
-# Colours, matching the focus ring and dark theme
-background-color=#1f1f28ee
-text-color=#dcd7ba
-border-color=#7fb4ca
-progress-color=over #7e9cd855
+# Colours, matching the focus ring and dark theme (Lavender)
+background-color=#1A1220ee
+text-color=#FAEBFF
+border-color=#D490FF
+progress-color=over #D490FF55
 
 # Timeout in ms
 default-timeout=5000
@@ -19,7 +19,7 @@ ignore-timeout=0
 layer=overlay
 
 [urgency=low]
-border-color=#727169
+border-color=#702E98
 default-timeout=3000
 
 [urgency=high]

@@ -1,0 +1,43 @@
+# Colors (Beans, from the Helix theme)
+# Based on Jellybeans: https://github.com/nanotech/jellybeans.vim
+# Helix PR: https://github.com/helix-editor/helix/pull/12963
+
+[colors.primary]
+background = '#111111'
+foreground = '#ebebd8'
+
+[colors.normal]
+black   = '#292929'
+red     = '#cc7c8a'
+green   = '#cee318'
+yellow  = '#dea407'
+blue    = '#048ac7'
+magenta = '#833c9f'
+cyan    = '#0ac1cd'
+white   = '#ebebd8'
+
+[colors.bright]
+black   = '#6d6d6d'
+red     = '#f44747'
+green   = '#ccff00'
+yellow  = '#fad07a'
+blue    = '#48c6ff'
+magenta = '#be67e1'
+cyan    = '#63e7f0'
+white   = '#ffffff'
+
+[colors.cursor]
+text   = '#e5e5e5'
+cursor = '#833c9f'
+
+[colors.selection]
+background = '#be67e1'
+foreground = '#1c1c1c'
+
+[[colors.indexed_colors]]
+index = 16
+color = '#ff9f00'
+
+[[colors.indexed_colors]]
+index = 17
+color = '#ff005b'

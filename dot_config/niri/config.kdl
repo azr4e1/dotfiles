@@ -3,6 +3,15 @@
 // Check the wiki for a full description of the configuration:
 // https://yalter.github.io/niri/Configuration:-Introduction
 
+// Lavender palette (Firefox Nova, dark variant):
+//   background   #1A1220
+//   surface      #311842
+//   deep accent  #4F216B
+//   mid accent   #702E98
+//   bright accent #D490FF
+//   light accent #E8B7FF
+//   text         #FAEBFF
+
 // Input device configuration.
 // Find the full list of options on the wiki:
 // https://yalter.github.io/niri/Configuration:-Input
@@ -204,13 +213,13 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fb4ca"
+        active-color "#D490FF"
 
         // Color of the ring on inactive monitors.
         //
         // The focus ring only draws around the active window, so the only place
         // where you can see its inactive-color is on other monitors.
-        inactive-color "#727169"
+        inactive-color "#702E98"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -219,7 +228,7 @@ layout {
         // You can use any CSS linear-gradient tool on the web to set these up.
         // Changing the color space is also supported, check the wiki for more info.
         //
-        // active-gradient from="#80c8ff" to="#c7ff7f" angle=45
+        // active-gradient from="#E8B7FF" to="#702E98" angle=135
 
         // You can also color the gradient relative to the entire view
         // of the workspace, rather than relative to just the window itself.
@@ -232,8 +241,8 @@ layout {
         position "top"
         width 4
         gap 3
-        active-color "#2d4f67"
-        inactive-color "#727169"
+        active-color "#702E98"
+        inactive-color "#4F216B"
         urgent-color "#e82424"
     }
 
@@ -244,8 +253,8 @@ layout {
         off
 
         width 4
-        active-color "#ffa066"
-        inactive-color "#727169"
+        active-color "#D490FF"
+        inactive-color "#702E98"
 
         // Color of the border around windows that request your attention.
         urgent-color "#e82424"
@@ -292,7 +301,7 @@ layout {
         offset x=0 y=5
 
         // You can also change the shadow color and opacity.
-        color "#09061870"
+        color "#1A122070"
     }
 
     // Struts shrink the area occupied by windows, similarly to layer-shell panels.
@@ -438,7 +447,7 @@ binds {
     Mod+Shift+Return repeat=false hotkey-overlay-title="Launch or focus Alacritty" {spawn-sh "lof Alacritty alacritty"; }
 
     Mod+Space hotkey-overlay-title="Run an Application" { spawn "fuzzel" "--placeholder" "Run an Application"; }
-    Mod+Delete { spawn "swaylock" "-f" "-c" "1f1f28"; }
+    Mod+Delete { spawn "swaylock" "-f" "-c" "1A1220"; }
     // Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
@@ -731,7 +740,7 @@ recent-windows {
     // open-delay-ms 150
 
     highlight {
-        active-color "#7fb4caff"
+        active-color "#D490FFff"
         urgent-color "#e82424ff"
     //     padding 30
     //     corner-radius 0
