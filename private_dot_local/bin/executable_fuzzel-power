@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Power menu for fuzzel: lock, suspend, hibernate, reboot, shutdown.
+# Lock runs before suspend/hibernate so the screen is covered on resume.
+
+menu() { fuzzel --dmenu --width 30 --lines 6 "$@"; }
+notify() { notify-send -a power "$@" 2>/dev/null; }
+lock() { pgrep -x swaylock >/dev/null || swaylock -f -c 1f1f28; }
+
+can_hibernate() {
+    [ -s /sys/power/resume ] && grep -q '^[^0]' /sys/power/resume 2>/dev/null
+}
+
+build_list() {
+    printf 'Lock\n'
+    printf 'Suspend\n'
+    can_hibernate && printf 'Hibernate\n'
+    printf 'Reboot\n'
+    printf 'Shut down\n'
+}
+
+choice=$(build_list | menu -p 'Power > ') || exit 0
+[ -n "$choice" ] || exit 0
+
+case "$choice" in
+    *Lock)      lock ;;
+    *Suspend)   lock; systemctl suspend ;;
+    *Hibernate) lock; systemctl hibernate ;;
+    *Reboot)
+        confirm=$(printf 'Yes\nNo\n' | menu -p 'Reboot now? > ')
+        [ "$confirm" = "Yes" ] && systemctl reboot
+        ;;
+    "⏻ Shut down")
+        confirm=$(printf 'Yes\nNo\n' | menu -p 'Shut down now? > ')
+        [ "$confirm" = "Yes" ] && systemctl poweroff
+        ;;
+esac

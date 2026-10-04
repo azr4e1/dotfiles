@@ -448,6 +448,7 @@ binds {
 
     Mod+Space hotkey-overlay-title="Run an Application" { spawn "fuzzel" "--placeholder" "Run an Application"; }
     Mod+Delete { spawn "swaylock" "-f" "-c" "1A1220"; }
+    Mod+Shift+Delete repeat=false hotkey-overlay-title="Power menu" { spawn-sh "fuzzel-power"; }
     // Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
