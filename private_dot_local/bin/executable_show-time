@@ -1,5 +1,33 @@
 #!/usr/bin/env bash
+
+trunc() { local s="$1" n="${2:-14}"; [ "${#s}" -gt "$n" ] && echo "${s:0:n}…" || echo "$s"; }
+
+wifi_status() {
+    local dev ssid
+    dev=$(nmcli -t -f DEVICE,TYPE device 2>/dev/null | awk -F: '$2=="wifi"{print $1; exit}')
+    [ -n "$dev" ] || { echo "off"; return; }
+    ssid=$(nmcli -g GENERAL.CONNECTION device show "$dev" 2>/dev/null)
+    [ -n "$ssid" ] && [ "$ssid" != "--" ] && trunc "$ssid" || echo "off"
+}
+
+bt_status() {
+    bluetoothctl show 2>/dev/null | grep -q 'Powered: yes' || { echo "off"; return; }
+    local dev
+    dev=$(bluetoothctl devices Connected 2>/dev/null | head -n1 | cut -d' ' -f3-)
+    [ -n "$dev" ] && trunc "$dev" || echo "on"
+}
+
+vpn_status() {
+    local name
+    name=$(nmcli -t -f TYPE,NAME connection show --active 2>/dev/null \
+        | awk -F: '$1=="vpn"||$1=="wireguard"{print $2; exit}')
+    [ -n "$name" ] && trunc "$name" || echo "off"
+}
+
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)
+summary="$(date '+%H:%M')  $(date '+%a %-d %b')"
+body="BAT <i>${bat:-?}%</i> · WIFI <i>$(wifi_status)</i> · BT <i>$(bt_status)</i> · VPN <i>$(vpn_status)</i>"
+
 notify-send -a clock -t 4000 \
     -h string:x-canonical-private-synchronous:clock \
-    "$(date '+%H:%M')" "$(date '+%A %-d %B')${bat:+  |  battery ${bat}%}"
+    "$summary" "$body"

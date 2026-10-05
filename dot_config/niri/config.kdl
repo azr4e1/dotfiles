@@ -447,8 +447,7 @@ binds {
     Mod+Shift+Return repeat=false hotkey-overlay-title="Launch or focus Alacritty" {spawn-sh "lof Alacritty alacritty"; }
 
     Mod+Space hotkey-overlay-title="Run an Application" { spawn "fuzzel" "--placeholder" "Run an Application"; }
-    Mod+Delete { spawn "swaylock" "-f" "-c" "1A1220"; }
-    Mod+Shift+Delete repeat=false hotkey-overlay-title="Power menu" { spawn-sh "fuzzel-power"; }
+    Mod+Delete repeat=false hotkey-overlay-title="Power menu" { spawn-sh "fuzzel-power"; }
     // Super+Delete allow-when-locked=true hotkey-overlay-title="Lock the Screen" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
@@ -726,7 +725,8 @@ binds {
     Mod+O repeat=false hotkey-overlay-title="Select VPN" {spawn-sh "vpn"; }
     Mod+B repeat=false hotkey-overlay-title="Select bluetooth" {spawn-sh "fuzzel-bluetooth"; }
     Mod+N repeat=false hotkey-overlay-title="Select WiFi" {spawn-sh "fuzzel-wifi"; }
-    Mod+M repeat=false hotkey-overlay-title="Show time" { spawn-sh "show-time"; }
+    Mod+M repeat=true hotkey-overlay-title="Show time" { spawn-sh "show-time"; }
+    // Mod+M repeat=false hotkey-overlay-title="Show time" { spawn-sh "show-time-persistent"; }
     Mod+D repeat=false hotkey-overlay-title="Toggle do not disturb" { spawn-sh "toggle-dnd"; }
 
     // Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
