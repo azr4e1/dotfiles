@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# ~/.local/bin/dismiss-swayidle-notif
+id=$(makoctl list -j | jq -r '.[] | select(.app_name=="SwayIdle") | .id')
+[ -n "$id" ] && makoctl dismiss -n "$id"
