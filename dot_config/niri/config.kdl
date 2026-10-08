@@ -326,7 +326,7 @@ layout {
 // spawn-at-startup "waybar"
 // spawn-at-startup "noctalia"
 spawn-at-startup "mako"
-spawn-at-startup "swaybg" "-i" "/home/ld/Pictures/Images/Wallpapers/Cyberpunk/wave_cropped.jpg" "-m" "fill"
+spawn-at-startup "swaybg" "-i" "/home/ld/Pictures/Images/wallpaper.jpg" "-m" "fill"
 spawn-at-startup "sh" "-c" "$HOME/.local/bin/battery-watch"
 spawn-at-startup "wlsunset" "-l" "51.5" "-L" "-0.12" "-t" "3500" "-T" "6500" "-d" "1800"
 

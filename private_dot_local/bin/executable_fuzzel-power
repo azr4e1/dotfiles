@@ -4,7 +4,7 @@
 
 menu() { fuzzel --dmenu --width 30 --lines 6 "$@"; }
 notify() { notify-send -a power "$@" 2>/dev/null; }
-lock() { pgrep -x swaylock >/dev/null || swaylock -f -c 1f1f28; }
+lock() { pgrep -x swaylock >/dev/null || swaylock -f -c 1f1f28 -i /home/ld/Pictures/Images/wallpaper.jpg; }
 
 can_hibernate() {
     [ -s /sys/power/resume ] && grep -q '^[^0]' /sys/power/resume 2>/dev/null
@@ -29,7 +29,7 @@ case "$choice" in
         confirm=$(printf 'Yes\nNo\n' | menu -p 'Reboot now? > ')
         [ "$confirm" = "Yes" ] && systemctl reboot
         ;;
-    "⏻ Shut down")
+    "Shut down")
         confirm=$(printf 'Yes\nNo\n' | menu -p 'Shut down now? > ')
         [ "$confirm" = "Yes" ] && systemctl poweroff
         ;;
