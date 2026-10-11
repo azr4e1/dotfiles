@@ -241,7 +241,7 @@ layout {
         position "top"
         width 4
         gap 3
-        active-color "#702E98"
+        active-color "#9B6FC0"
         inactive-color "#4F216B"
         urgent-color "#e82424"
     }
