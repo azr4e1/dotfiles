@@ -29,7 +29,7 @@ dim() { echo "<span foreground='#6d6d6d'>$1</span>"; }
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)
 summary="$(date '+%a %-d %b')"
 sep=" $(dim '·') "
-body="<span size='xx-large'><b>$(date '+%H:%M')</b></span>
+body="<span size='19000'><b>$(date '+%H:%M')</b></span>
 $(dim 'BAT') ${bat:-?}%${sep}$(dim 'WIFI') $(wifi_status)${sep}$(dim 'BT') $(bt_status)${sep}$(dim 'VPN') $(vpn_status)"
 
 notify-send -a clock -t 5000 \
