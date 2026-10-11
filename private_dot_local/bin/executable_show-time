@@ -24,11 +24,14 @@ vpn_status() {
     [ -n "$name" ] && trunc "$name" || echo "off"
 }
 
+dim() { echo "<span foreground='#6d6d6d'>$1</span>"; }
+
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)
 summary="$(date '+%a %-d %b')"
+sep=" $(dim '·') "
 body="<span size='xx-large'><b>$(date '+%H:%M')</b></span>
-BAT <i>${bat:-?}%</i> · WIFI <i>$(wifi_status)</i> · BT <i>$(bt_status)</i> · VPN <i>$(vpn_status)</i>"
+$(dim 'BAT') ${bat:-?}%${sep}$(dim 'WIFI') $(wifi_status)${sep}$(dim 'BT') $(bt_status)${sep}$(dim 'VPN') $(vpn_status)"
 
-notify-send -a clock -t 4000 \
+notify-send -a clock -t 5000 \
     -h string:x-canonical-private-synchronous:clock \
     "$summary" "$body"
