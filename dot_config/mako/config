@@ -5,6 +5,7 @@ padding=12
 width=360
 border-size=2
 border-radius=10
+markup=1
 
 # Colours, matching the focus ring and dark theme (Lavender)
 background-color=#1A1220ee
@@ -30,6 +31,9 @@ default-timeout=0
 anchor=bottom-center
 width=260
 history=0
+
+[app-name=clock]
+height=150
 
 [mode=do-not-disturb]
 invisible=1

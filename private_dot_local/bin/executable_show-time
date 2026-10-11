@@ -25,8 +25,9 @@ vpn_status() {
 }
 
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)
-summary="$(date '+%H:%M')  $(date '+%a %-d %b')"
-body="BAT <i>${bat:-?}%</i> · WIFI <i>$(wifi_status)</i> · BT <i>$(bt_status)</i> · VPN <i>$(vpn_status)</i>"
+summary="$(date '+%a %-d %b')"
+body="<span size='xx-large'><b>$(date '+%H:%M')</b></span>
+BAT <i>${bat:-?}%</i> · WIFI <i>$(wifi_status)</i> · BT <i>$(bt_status)</i> · VPN <i>$(vpn_status)</i>"
 
 notify-send -a clock -t 4000 \
     -h string:x-canonical-private-synchronous:clock \
