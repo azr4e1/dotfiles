@@ -33,7 +33,7 @@ width=260
 history=0
 
 [app-name=clock]
-height=150
+height=300
 
 [mode=do-not-disturb]
 invisible=1
