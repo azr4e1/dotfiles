@@ -1,7 +1,7 @@
 # Layout, matching niri's gaps and corner radius
 anchor=top-right
-margin=0
-outer-margin=3
+margin=3
+outer-margin=0,0,20,0
 padding=12
 width=360
 border-size=2
