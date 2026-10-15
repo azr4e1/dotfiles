@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# ~/.local/bin/awake — toggle swayidle on/off (prevents the screen from locking/sleeping)
+
+pid=$(pgrep -x swayidle | head -n1)
+if [ -z "$pid" ]; then
+    notify-send -a dnd -t 2000 "Awake" "swayidle isn't running"
+    exit 1
+fi
+
+if ps -o stat= -p "$pid" | grep -q T; then
+    kill -CONT "$pid"
+    notify-send -a dnd -t 2000 -h string:x-canonical-private-synchronous:dnd "Awake off"
+else
+    kill -STOP "$pid"
+    notify-send -a dnd -t 2000 -h string:x-canonical-private-synchronous:dnd "Awake on"
+fi

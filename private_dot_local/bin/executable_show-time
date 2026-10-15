@@ -24,13 +24,40 @@ vpn_status() {
     [ -n "$name" ] && trunc "$name" || echo "off"
 }
 
+dnd_status() {
+    makoctl mode 2>/dev/null | grep -qx do-not-disturb && echo "on" || echo "off"
+}
+
+awake_status() {
+    local pid
+    pid=$(pgrep -x swayidle | head -n1)
+    [ -n "$pid" ] || { echo "off"; return; }
+    ps -o stat= -p "$pid" 2>/dev/null | grep -q T && echo "on" || echo "off"
+}
+
 dim() { echo "<span foreground='#6d6d6d'>$1</span>"; }
 
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)
 summary="$(date '+%a %-d %b')"
 sep=" $(dim '·') "
+
+vpn=$(vpn_status)
+dnd=$(dnd_status)
+awake=$(awake_status)
+
+extra=()
+[ "$vpn" != "off" ]   && extra+=("$(dim 'VPN') $vpn")
+[ "$dnd" = "on" ]     && extra+=("$(dim 'DND') on")
+[ "$awake" = "on" ]   && extra+=("$(dim 'AWAKE') on")
+
+line3=""
+for item in "${extra[@]}"; do
+    [ -n "$line3" ] && line3="$line3$sep$item" || line3="$item"
+done
+[ -n "$line3" ] && line3=$'\n'"$line3"
+
 body="<span size='19000'><b>$(date '+%H:%M')</b></span>
-$(dim 'BAT') ${bat:-?}%${sep}$(dim 'WIFI') $(wifi_status)${sep}$(dim 'BT') $(bt_status)${sep}$(dim 'VPN') $(vpn_status)"
+$(dim 'BAT') ${bat:-?}%${sep}$(dim 'WIFI') $(wifi_status)${sep}$(dim 'BT') $(bt_status)${line3}"
 
 notify-send -a clock -t 5000 \
     -h string:x-canonical-private-synchronous:clock \
