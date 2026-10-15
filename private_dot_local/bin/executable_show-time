@@ -35,6 +35,8 @@ awake_status() {
     ps -o stat= -p "$pid" 2>/dev/null | grep -q T && echo "on" || echo "off"
 }
 
+power_status() { powerprofilesctl get 2>/dev/null || echo "?"; }
+
 dim() { echo "<span foreground='#6d6d6d'>$1</span>"; }
 
 bat=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n1)

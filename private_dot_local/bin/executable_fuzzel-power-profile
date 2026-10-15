@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Power profile picker for fuzzel, using power-profiles-daemon (powerprofilesctl).
+# Records the current AC/battery state signature on a manual pick, matching
+# power-auto's own tracking, so power-auto's next tick sees "no change" and
+# leaves this choice in place until AC or the 20% line actually changes.
+
+PS_DIR="${POWER_SUPPLY_DIR:-/sys/class/power_supply}"
+STATE_FILE="${POWER_AUTO_STATE_FILE:-$HOME/.cache/power-auto-state}"
+
+menu() { fuzzel --dmenu --width 25 --lines 4 "$@"; }
+notify() { notify-send -a power "$@" 2>/dev/null; }
+
+on_ac() {
+    local f
+    for f in "$PS_DIR"/A{C,DP}*/online; do
+        [ -r "$f" ] && [ "$(cat "$f" 2>/dev/null)" = "1" ] && return 0
+    done
+    for f in "$PS_DIR"/BAT*/status; do
+        [ -r "$f" ] || continue
+        case "$(cat "$f" 2>/dev/null)" in
+            Charging|Full) return 0 ;;
+        esac
+    done
+    return 1
+}
+
+current_state() {
+    if on_ac; then
+        echo ac
+    else
+        local pct
+        pct=$(cat "$PS_DIR"/BAT*/capacity 2>/dev/null | head -n1)
+        if [ -n "$pct" ] && [ "$pct" -lt 20 ] 2>/dev/null; then
+            echo batt-low
+        else
+            echo batt-normal
+        fi
+    fi
+}
+
+current=$(powerprofilesctl get 2>/dev/null)
+if [ -z "$current" ]; then
+    notify -u critical "Power profile" "powerprofilesctl unavailable"
+    exit 1
+fi
+
+build_list() {
+    # Profile names are at 2-char indent ("* " or "  "); their attributes
+    # (Driver, Degraded, ...) are indented further and must be skipped.
+    powerprofilesctl list 2>/dev/null | awk '
+        /^\* [a-zA-Z0-9-]+:$/ { name=$0; sub(/^\* /, "", name); sub(/:$/, "", name); print "* " name; next }
+        /^  [a-zA-Z0-9-]+:$/  { name=$0; sub(/^  /, "", name); sub(/:$/, "", name); print "  " name }
+    '
+}
+
+choice=$(build_list | menu -p 'Power profile > ') || exit 0
+[ -n "$choice" ] || exit 0
+
+profile=$(sed -E 's/^[* ]+//' <<<"$choice")
+[ "$profile" != "$current" ] || exit 0
+
+if powerprofilesctl set "$profile" 2>/dev/null; then
+    mkdir -p "$(dirname "$STATE_FILE")"
+    current_state > "$STATE_FILE"
+    notify "Power profile" "Switched to $profile"
+else
+    notify -u critical "Power profile" "Failed to set $profile"
+fi

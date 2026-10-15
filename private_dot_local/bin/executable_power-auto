@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Sets the power-profiles-daemon profile based on AC/battery state:
+#   on AC            -> performance
+#   on battery, <20% -> power-saver
+#   on battery, >=20% -> balanced
+#
+# Only acts when the underlying state actually changes (tracked in STATE_FILE),
+# so a manual pick via fuzzel-power-profile sticks until AC is plugged/unplugged
+# or the battery crosses the 20% line — not just until the next timer tick.
+# Intended to run periodically (systemd timer) and once on AC plug/unplug.
+
+PS_DIR="${POWER_SUPPLY_DIR:-/sys/class/power_supply}"
+STATE_FILE="${POWER_AUTO_STATE_FILE:-$HOME/.cache/power-auto-state}"
+
+on_ac() {
+    local f
+    for f in "$PS_DIR"/A{C,DP}*/online; do
+        [ -r "$f" ] && [ "$(cat "$f" 2>/dev/null)" = "1" ] && return 0
+    done
+    # Fallback for setups with no separate AC/ADP node: infer from battery status.
+    for f in "$PS_DIR"/BAT*/status; do
+        [ -r "$f" ] || continue
+        case "$(cat "$f" 2>/dev/null)" in
+            Charging|Full) return 0 ;;
+        esac
+    done
+    return 1
+}
+
+battery_pct() {
+    cat "$PS_DIR"/BAT*/capacity 2>/dev/null | head -n1
+}
+
+if on_ac; then
+    state=ac
+    target=performance
+else
+    pct=$(battery_pct)
+    if [ -n "$pct" ] && [ "$pct" -lt 20 ] 2>/dev/null; then
+        state=batt-low
+        target=power-saver
+    else
+        state=batt-normal
+        target=balanced
+    fi
+fi
+
+last_state=$(cat "$STATE_FILE" 2>/dev/null)
+[ "$state" != "$last_state" ] || exit 0   # state unchanged -> leave any manual pick alone
+
+mkdir -p "$(dirname "$STATE_FILE")"
+echo "$state" > "$STATE_FILE"
+
+current=$(powerprofilesctl get 2>/dev/null)
+[ -n "$current" ] || exit 1
+[ "$current" != "$target" ] || exit 0
+
+if powerprofilesctl set "$target" 2>/dev/null; then
+    notify-send -a power -t 2000 "Power profile" "Auto-switched to $target" 2>/dev/null
+fi

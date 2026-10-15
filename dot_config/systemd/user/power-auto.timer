@@ -1,0 +1,9 @@
+[Unit]
+Description=Run power-auto periodically
+
+[Timer]
+OnBootSec=10s
+OnUnitActiveSec=30s
+
+[Install]
+WantedBy=timers.target

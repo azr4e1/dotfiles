@@ -714,7 +714,7 @@ binds {
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
-    Mod+Shift+P { power-off-monitors; }
+    Mod+Shift+O { power-off-monitors; }
 
     // Personal
     Mod+P repeat=false hotkey-overlay-title="Select a password" { spawn-sh "gopass list  --flat | fuzzel --dmenu --placeholder 'your passwords' | tr -d '\n' | xargs -0 gopass show -c"; }
@@ -728,6 +728,7 @@ binds {
     Mod+M repeat=true hotkey-overlay-title="Show time" { spawn-sh "show-time"; }
     Mod+D repeat=false hotkey-overlay-title="Toggle do not disturb" { spawn-sh "toggle-dnd"; }
     Mod+Z repeat=false hotkey-overlay-title="Toggle awake" { spawn-sh "awake"; }
+    Mod+Shift+P repeat=false hotkey-overlay-title="Select power profile" { spawn-sh "fuzzel-power-profile"; }
 
     // Mod+S repeat=false hotkey-overlay-title="Toggle Noctalia Control Center" { spawn "qs" "-c" "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
     Mod+Shift+A repeat=false hotkey-overlay-title="Select an open window" { spawn-sh "window-selection"; }
