@@ -44,3 +44,6 @@ invisible=0
 
 [mode=do-not-disturb app-name=clock]
 invisible=0
+
+[mode=do-not-disturb app-name=osd]
+invisible=0
